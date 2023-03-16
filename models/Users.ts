@@ -15,6 +15,7 @@ export interface IUser extends Document {
   branch: [IBranch["_id"]];
   booking: [IBooking["_id"]];
   comparePassword: (password: string) => Promise<Boolean>;
+  newPassword: (password: string) => Promise<Boolean>;
 }
 
 const userSchema = new Schema({
@@ -61,12 +62,18 @@ const userSchema = new Schema({
 
 userSchema.pre<IUser>("save", async function () {
   const user = this;
-
   const salt = await bcrypt.genSalt();
   const hash = await bcrypt.hash(user.password, salt);
+
   user.password = hash;
 });
 
+userSchema.methods.newPassword = async function (password: string) {
+  const user = this;
+  const salt = await bcrypt.genSalt();
+  const hash = await bcrypt.hash(password, salt);
+  await user.updateOne({ password: hash });
+};
 userSchema.methods.comparePassword = async function (
   password: string
 ): Promise<Boolean> {

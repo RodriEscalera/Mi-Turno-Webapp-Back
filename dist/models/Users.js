@@ -62,6 +62,14 @@ userSchema.pre("save", function () {
         user.password = hash;
     });
 });
+userSchema.methods.newPassword = function (password) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const user = this;
+        const salt = yield bcrypt_1.default.genSalt();
+        const hash = yield bcrypt_1.default.hash(password, salt);
+        yield user.updateOne({ password: hash });
+    });
+};
 userSchema.methods.comparePassword = function (password) {
     return __awaiter(this, void 0, void 0, function* () {
         return yield bcrypt_1.default.compare(password, this.password);

@@ -13,12 +13,20 @@ export interface info {
   branch?: any;
   booking?: Array<IBooking>;
 }
+export interface pass {
+  authorized: boolean;
+}
 
-export const generateToken = (payload: info) => {
+export const generateToken = (payload: info | pass) => {
   const token = jwt.sign({ user: payload }, config.jwtSecret);
   return token;
 };
 
-export const validateToken = (token: string) => {
+export const generateValidationToken = (payload: info | pass) => {
+  const token = jwt.sign(payload, config.jwtSecret);
+  return token;
+};
+
+export const validateToken = (token: any) => {
   return jwt.verify(token, config.jwtSecret);
 };
