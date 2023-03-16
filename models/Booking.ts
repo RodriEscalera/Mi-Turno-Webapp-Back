@@ -4,7 +4,8 @@ import { IUser } from "./Users";
 
 export interface IBooking extends Document {
   branchId: IBranch["_id"];
-  reservationDate: String;
+  date: String;
+  time: String;
   userId: IUser["_id"];
   fullName: String;
   phone: Number;
@@ -16,7 +17,11 @@ const bookingSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Branch",
   },
-  reservationDate: {
+  date: {
+    type: String,
+    required: true,
+  },
+  time: {
     type: String,
     required: true,
   },

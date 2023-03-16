@@ -6,7 +6,11 @@ const bookingSchema = new mongoose_1.Schema({
         type: mongoose_1.Schema.Types.ObjectId,
         ref: "Branch",
     },
-    reservationDate: {
+    date: {
+        type: String,
+        required: true,
+    },
+    time: {
         type: String,
         required: true,
     },

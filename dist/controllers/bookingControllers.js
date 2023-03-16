@@ -26,13 +26,13 @@ const getAllBookings = (req, res) => __awaiter(void 0, void 0, void 0, function*
 });
 exports.getAllBookings = getAllBookings;
 const createBooking = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { schedule, date, fullName, phone, email } = req.body;
+    const { time, date, fullName, phone, email } = req.body;
     const newBooking = new Booking_1.default({
         fullName,
         email,
         phone,
         date,
-        schedule,
+        time,
     });
     yield newBooking.save();
     res.send(newBooking);
