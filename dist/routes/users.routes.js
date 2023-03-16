@@ -13,6 +13,8 @@ router.post("/me", user_controller_1.me);
 router.post("/findAll", validations_1.validateAdminAndOp, user_controller_1.findAllUsers);
 router.post("/findOne/:id", validations_1.validateAdminAndOp, user_controller_1.findOneUser);
 router.put("/updateUser", user_controller_1.updateUser);
+router.post("/askForChangePassword", user_controller_1.changePasswordFirstStep);
+router.post("/changePassword", user_controller_1.changePasswordSecondStep);
 exports.default = router;
 /*
 router.post("/sendmail", async (req: Request, res: Response) => {

@@ -12,11 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateUser = exports.findOneUser = exports.findAllUsers = exports.me = exports.login = exports.register = void 0;
+exports.changePasswordSecondStep = exports.changePasswordFirstStep = exports.updateUser = exports.findOneUser = exports.findAllUsers = exports.me = exports.login = exports.register = void 0;
 const Users_1 = __importDefault(require("../models/Users"));
 const token_1 = require("../config/token");
 const token_2 = require("../config/token");
 const Admin_1 = __importDefault(require("../models/Admin"));
+const emails_1 = require("../services/emails");
 const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         console.log(req.body);
@@ -32,6 +33,7 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             dni,
             usertype,
         });
+        (0, emails_1.sendRegisterEmail)(newUser);
         yield newUser.save();
         res.send(newUser);
     }
@@ -44,6 +46,7 @@ exports.register = register;
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, password } = req.body;
+        console.log(password);
         const user = yield Users_1.default.findOne({ email });
         const admin = yield Admin_1.default.findOne({ email });
         const result = [user, admin];
@@ -53,7 +56,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             return res.sendStatus(400);
         const isMatch = yield resultado[0].comparePassword(password);
         if (!isMatch)
-            return res.sendStatus(400);
+            return res.status(400).send("Not mached");
         if (resultado[0].userType === "user" ||
             resultado[0].userType === "operator") {
             const payload = {
@@ -139,9 +142,13 @@ const findOneUser = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.findOneUser = findOneUser;
 const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        console.log(" REQ.BODY", req.body);
+        // console.log(" REQ.BODY", req.body);
         const { _id, fullName, email, dni, phone } = req.body;
-        if (_id === "" || fullName === "" || email === "" || dni === "" || phone === "") {
+        if (_id === "" ||
+            fullName === "" ||
+            email === "" ||
+            dni === "" ||
+            phone === "") {
             return res.sendStatus(400);
         }
         //console.log("ESTO ES REQ.BODY NENEEE",req.body);
@@ -157,3 +164,41 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.updateUser = updateUser;
+const changePasswordFirstStep = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id, email } = req.body;
+        if (id) {
+            const user = yield Users_1.default.findById(id);
+            const token = (0, token_1.generateValidationToken)({ authorized: true });
+            (0, emails_1.sendMailChangePassword)(user, token);
+            res.sendStatus(200);
+        }
+        else {
+            const user = yield Users_1.default.findOne({ email });
+            const token = (0, token_1.generateValidationToken)({ authorized: true });
+            (0, emails_1.sendMailChangePassword)(user, token);
+            res.sendStatus(200);
+        }
+    }
+    catch (err) {
+        console.log(err);
+        res.sendStatus(400);
+    }
+});
+exports.changePasswordFirstStep = changePasswordFirstStep;
+const changePasswordSecondStep = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id, token, newPassword } = req.body;
+        const user = yield Users_1.default.findById(id);
+        const returnedToken = (0, token_2.validateToken)(token);
+        if (!user || !returnedToken)
+            return res.status(400).send("id o token invalido!");
+        yield user.newPassword(newPassword);
+        res.sendStatus(200);
+    }
+    catch (err) {
+        console.log(err);
+        res.sendStatus(400);
+    }
+});
+exports.changePasswordSecondStep = changePasswordSecondStep;

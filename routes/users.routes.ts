@@ -6,10 +6,11 @@ import {
   findAllUsers,
   findOneUser,
   updateUser,
+  changePasswordFirstStep,
+  changePasswordSecondStep,
 } from "../controllers/user.controller";
 
 import { validateAdminAndOp } from "../middlewares/validations";
-import { transporter } from "../config/nodemailer";
 const router = express.Router();
 
 router.post("/register", register);
@@ -18,6 +19,9 @@ router.post("/me", me);
 router.post("/findAll", validateAdminAndOp, findAllUsers);
 router.post("/findOne/:id", validateAdminAndOp, findOneUser);
 router.put("/updateUser", updateUser);
+router.post("/askForChangePassword", changePasswordFirstStep);
+router.post("/changePassword", changePasswordSecondStep);
+
 export default router;
 
 /*
