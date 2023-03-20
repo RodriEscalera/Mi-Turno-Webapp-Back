@@ -8,7 +8,6 @@ const branchSchema = new mongoose_1.Schema({
     },
     location: {
         type: String,
-        required: true,
     },
     phone: {
         type: String,

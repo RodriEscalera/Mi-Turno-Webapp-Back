@@ -4,9 +4,11 @@ import { IBranch } from "../models/Branch";
 import { IBooking } from "../models/Booking";
 
 export interface info {
+  id: string;
   fullName: string;
   email: string;
   dni: number;
+  phone: number;
   usertype: string;
   branch?: any;
   booking?: Array<IBooking>;

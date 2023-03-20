@@ -18,58 +18,99 @@ const Booking_1 = __importDefault(require("../models/Booking"));
 //seed turnos
 const turnos = [
     {
-        reservationDate: "13:00hs",
+        date: "12/3/2023",
+        time: "13:00hs",
         email: "Turnos@Booking.com",
         password: "IsBooking@1234",
+        phone: "12345667",
+        fullName: "usuario 1"
     },
     {
-        reservationDate: "13:30hs",
+        date: "12/3/2023",
+        time: "13:30hs",
         email: "Turnos@Booking.com",
         password: "IsBooking@1234",
+        phone: "12345667",
+        fullName: "usuario 24"
+    },
+    {
+        date: "12/3/2023",
+        time: "14:00hs",
+        email: "Turnos@Booking.com",
+        password: "IsBooking@1234",
+        phone: "12345667",
+        fullName: "usuario 18"
+    },
+    {
+        date: "12/3/2023",
+        time: "14:30hs",
+        email: "Turnos@Booking.com",
+        password: "IsBooking@1234",
+        phone: "12345675667",
+        fullName: "usuario 5"
     }, {
-        reservationDate: "14:00hs",
+        date: "12/3/2023",
+        time: "15:00hs",
         email: "Turnos@Booking.com",
         password: "IsBooking@1234",
+        phone: "12312345667",
+        fullName: "usuario 20"
     }, {
-        reservationDate: "14:30hs",
+        date: "12/3/2023",
+        time: "15:30hs",
         email: "Turnos@Booking.com",
         password: "IsBooking@1234",
+        phone: "123452345667",
+        fullName: "usuario 21"
     }, {
-        reservationDate: "15:00hs",
+        date: "12/3/2023",
+        time: "16:00hs",
         email: "Turnos@Booking.com",
         password: "IsBooking@1234",
+        phone: "12345123667",
+        fullName: "usuario 12"
     }, {
-        reservationDate: "15:30hs",
+        date: "12/3/2023",
+        time: "16:30hs",
         email: "Turnos@Booking.com",
         password: "IsBooking@1234",
+        phone: "12345457667",
+        fullName: "usuario 8"
     }, {
-        reservationDate: "16:00hs",
+        date: "12/3/2023",
+        time: "17:00hs",
         email: "Turnos@Booking.com",
         password: "IsBooking@1234",
+        phone: "12345532667",
+        fullName: "usuario 17"
     }, {
-        reservationDate: "16:30hs",
+        date: "12/3/2023",
+        time: "17:30hs",
         email: "Turnos@Booking.com",
         password: "IsBooking@1234",
+        phone: "12312345667",
+        fullName: "usuario 6"
     }, {
-        reservationDate: "17:00hs",
+        date: "12/3/2023",
+        time: "18:00hs",
         email: "Turnos@Booking.com",
         password: "IsBooking@1234",
+        phone: "123452560067",
+        fullName: "usuario 22"
     }, {
-        reservationDate: "17:30hs",
+        date: "12/3/2023",
+        time: "18:30hs",
         email: "Turnos@Booking.com",
         password: "IsBooking@1234",
+        phone: "120034535667",
+        fullName: "usuario 13"
     }, {
-        reservationDate: "18:00hs",
+        date: "12/3/2023",
+        time: "19:00hs",
         email: "Turnos@Booking.com",
         password: "IsBooking@1234",
-    }, {
-        reservationDate: "18:30hs",
-        email: "Turnos@Booking.com",
-        password: "IsBooking@1234",
-    }, {
-        reservationDate: "19:00hs",
-        email: "Turnos@Booking.com",
-        password: "IsBooking@1234",
+        phone: "123456100167",
+        fullName: "usuario 1"
     }
 ];
 const seedBooking = () => __awaiter(void 0, void 0, void 0, function* () {

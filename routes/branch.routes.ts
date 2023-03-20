@@ -7,9 +7,12 @@ import {
   createBranch,
   updateBranch,
   deleteBranch,
+  getAllBranches,
 } from "../controllers/branchControllers";
 
-router.get("/branches", getAllBranch, (req, res) => res.json("getting branches"));
+router.get("/allbranches", getAllBranches);
+
+router.get("/branches/:page", getAllBranch);
 
 router.get("/branches/:id", getBranch, (req, res) =>
   res.json("getting single branch")

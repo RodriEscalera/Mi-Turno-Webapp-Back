@@ -29,7 +29,7 @@ export const asignbranch = async (req: Request, res: Response) => {
     res.sendStatus(400);
   }
 };
-
+//
 export const registerAdmin = async (req: Request, res: Response) => {
   try {
     const { fullName, dni, email, password, usertype } = req.body;

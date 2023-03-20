@@ -11,7 +11,7 @@ const index_1 = __importDefault(require("./routes/index"));
 const port = 3001;
 const app = (0, express_1.default)();
 app.use((0, morgan_1.default)("dev"));
-app.use((0, cors_1.default)());
+app.use((0, cors_1.default)({ credentials: true, origin: "http://localhost:3000" }));
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: false }));
 app.get("/", (req, res) => {

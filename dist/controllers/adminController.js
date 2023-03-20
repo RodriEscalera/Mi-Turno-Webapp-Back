@@ -44,6 +44,7 @@ const asignbranch = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.asignbranch = asignbranch;
+//
 const registerAdmin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { fullName, dni, email, password, usertype } = req.body;

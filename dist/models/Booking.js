@@ -5,26 +5,32 @@ const bookingSchema = new mongoose_1.Schema({
     branch: {
         type: mongoose_1.Schema.Types.ObjectId,
         ref: "Branch",
+        required: true,
     },
-    reservationDate: {
+    date: {
         type: String,
-        require: true,
+        required: true,
+    },
+    time: {
+        type: String,
+        required: true,
     },
     user: {
         type: mongoose_1.Schema.Types.ObjectId,
         ref: "Users",
+        required: true,
     },
     fullName: {
         type: String,
-        require: true,
+        required: true,
     },
     phone: {
         type: Number,
-        require: true,
+        required: true,
     },
     email: {
         type: String,
-        require: true,
+        required: true,
         lowercase: true,
         trim: true,
     },

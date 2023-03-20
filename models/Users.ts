@@ -10,6 +10,7 @@ export interface IUser extends Document {
   email: string;
   password: string;
   dni: number;
+  phone: number;
   usertype: string;
   branch: [IBranch["_id"]];
   booking: [IBooking["_id"]];
@@ -28,6 +29,9 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: true,
+  },
+  phone: {
+    type: Number,
   },
   dni: {
     type: Number,

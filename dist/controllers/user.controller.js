@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.findOneUser = exports.findAllUsers = exports.me = exports.login = exports.register = void 0;
+exports.updateUser = exports.findOneUser = exports.findAllUsers = exports.me = exports.login = exports.register = void 0;
 const Users_1 = __importDefault(require("../models/Users"));
 const token_1 = require("../config/token");
 const token_2 = require("../config/token");
@@ -20,7 +20,8 @@ const Admin_1 = __importDefault(require("../models/Admin"));
 const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         console.log(req.body);
-        const { fullName, email, password, dni, usertype } = req.body;
+        const { fullName, email, password, dni } = req.body;
+        const usertype = "user";
         const exists = yield Users_1.default.findOne({ email });
         if (exists)
             return res.sendStatus(400);
@@ -56,9 +57,11 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (resultado[0].userType === "user" ||
             resultado[0].userType === "operator") {
             const payload = {
+                id: resultado[0]._id,
                 fullName: resultado[0].fullName,
                 email: resultado[0].email,
                 dni: resultado[0].dni,
+                phone: resultado[0].phone,
                 usertype: resultado[0].usertype,
                 booking: resultado[0].booking,
                 branch: resultado[0].branch,
@@ -68,9 +71,11 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
         else {
             const payload = {
+                id: resultado[0]._id,
                 fullName: resultado[0].fullName,
                 email: resultado[0].email,
                 dni: resultado[0].dni,
+                phone: resultado[0].phone,
                 usertype: resultado[0].usertype,
             };
             const token = (0, token_1.generateToken)(payload);
@@ -83,19 +88,31 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.login = login;
-const me = (req, res) => {
+const me = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { token } = req.body;
         if (!token)
             return res.sendStatus(400);
         const { user } = (0, token_2.validateToken)(token);
-        res.send(user);
+        //console.log("ESTO ES EL USER!!!!!!!! ", user);
+        const updatedUser = yield Users_1.default.findById(user.id);
+        //console.log("ESTO ES EL UPDATEDUSER", updatedUser);
+        const payload = {
+            id: updatedUser === null || updatedUser === void 0 ? void 0 : updatedUser._id,
+            fullName: updatedUser === null || updatedUser === void 0 ? void 0 : updatedUser.fullName,
+            email: updatedUser === null || updatedUser === void 0 ? void 0 : updatedUser.email,
+            dni: updatedUser === null || updatedUser === void 0 ? void 0 : updatedUser.dni,
+            phone: updatedUser === null || updatedUser === void 0 ? void 0 : updatedUser.phone,
+            usertype: updatedUser === null || updatedUser === void 0 ? void 0 : updatedUser.usertype,
+        };
+        res.send(payload);
+        //console.log("ESTO  ES EL PAYLOAD", payload);
     }
     catch (err) {
         console.log(err);
         res.send(401);
     }
-};
+});
 exports.me = me;
 const findAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -120,3 +137,23 @@ const findOneUser = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.findOneUser = findOneUser;
+const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        console.log(" REQ.BODY", req.body);
+        const { _id, fullName, email, dni, phone } = req.body;
+        if (_id === "" || fullName === "" || email === "" || dni === "" || phone === "") {
+            return res.sendStatus(400);
+        }
+        //console.log("ESTO ES REQ.BODY NENEEE",req.body);
+        const user = yield Users_1.default.findById(_id);
+        yield (user === null || user === void 0 ? void 0 : user.updateOne({ fullName, email, dni, phone }));
+        yield (user === null || user === void 0 ? void 0 : user.save());
+        //console.log(user);
+        res.json(user);
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Error updating user" });
+    }
+});
+exports.updateUser = updateUser;
