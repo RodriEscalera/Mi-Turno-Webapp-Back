@@ -5,6 +5,7 @@ const bookingSchema = new mongoose_1.Schema({
     branch: {
         type: mongoose_1.Schema.Types.ObjectId,
         ref: "Branch",
+        required: true,
     },
     date: {
         type: String,
@@ -17,6 +18,7 @@ const bookingSchema = new mongoose_1.Schema({
     user: {
         type: mongoose_1.Schema.Types.ObjectId,
         ref: "Users",
+        required: true,
     },
     fullName: {
         type: String,

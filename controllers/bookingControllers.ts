@@ -1,5 +1,6 @@
-import Booking from "../models/Booking";
+import Booking, { IBooking } from "../models/Booking";
 import { Request, Response } from "express";
+import Branch, { IBranch } from "../models/Branch";
 
 export const getAllBookings = async (req: Request, res: Response) => {
   try {
@@ -11,9 +12,26 @@ export const getAllBookings = async (req: Request, res: Response) => {
   }
 };
 
+export const getBookingOfUser = async (req: Request, res: Response) => {
+  try {
+    const idUser = req.params.user;
+    const turnos: IBooking[] = await Booking.find({ user: idUser })
+    .populate("branch")
+
+    res.status(200).send(turnos);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: "Hubo un error al obtener los turnos del usuario." });
+  }
+};
+
 export const createBooking = async (req: Request, res: Response) => {
-  const { time, date, fullName, phone, email } = req.body;
+  const { branch, user, time, date, fullName, phone, email } = req.body;
   const newBooking = new Booking({
+    branch,
+    user,
     fullName,
     email,
     phone,
