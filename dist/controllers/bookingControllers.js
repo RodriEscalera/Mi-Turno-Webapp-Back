@@ -60,10 +60,11 @@ exports.createBooking = createBooking;
 const getLastBooking = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { userId } = req.params;
-        const bookings = yield Booking_1.default.find({ user: userId }).sort({
+        const bookings = yield Booking_1.default.find({ user: userId })
+            .sort({
             createdAt: "desc",
-        });
-        console.log(bookings);
+        })
+            .populate("branch");
         res.send(bookings[0]);
     }
     catch (err) {

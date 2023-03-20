@@ -50,10 +50,11 @@ export const getLastBooking = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
 
-    const bookings = await Booking.find({ user: userId }).sort({
-      createdAt: "desc",
-    });
-    console.log(bookings);
+    const bookings: any = await Booking.find({ user: userId })
+      .sort({
+        createdAt: "desc",
+      })
+      .populate("branch");
     res.send(bookings[0]);
   } catch (err) {
     console.log(err);
