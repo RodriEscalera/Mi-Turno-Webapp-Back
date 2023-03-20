@@ -41,7 +41,7 @@ export const createBooking = async (req: Request, res: Response) => {
   await newBooking.save();
   res.send(newBooking);
 };
-
+//new
 export const updateBooking = async (
   req: Request,
   res: Response
@@ -55,7 +55,7 @@ export const updateBooking = async (
       res.status(404).json({ message: "Booking not found" });
       return;
     }
-    
+
     booking.branch = branch;
     booking.user = user;
     booking.time = time;

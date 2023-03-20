@@ -55,6 +55,7 @@ const createBooking = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     res.send(newBooking);
 });
 exports.createBooking = createBooking;
+//new
 const updateBooking = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const { branch, user, time, date, fullName, phone, email } = req.body;
