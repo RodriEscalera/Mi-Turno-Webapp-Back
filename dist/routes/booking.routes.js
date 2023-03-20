@@ -9,4 +9,6 @@ const router = express_1.default.Router();
 router.post("/createBooking", bookingControllers_1.createBooking);
 router.get("/getBookingOfUser/:user", bookingControllers_1.getBookingOfUser);
 router.get("/getAllBookings", bookingControllers_1.getAllBookings);
+router.put("/createBooking", bookingControllers_1.createBooking);
+router.delete("/deleteBooking", bookingControllers_1.deleteBooking);
 exports.default = router;
