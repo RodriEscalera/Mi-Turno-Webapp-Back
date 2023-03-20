@@ -15,8 +15,9 @@ export const getAllBookings = async (req: Request, res: Response) => {
 export const getBookingOfUser = async (req: Request, res: Response) => {
   try {
     const idUser = req.params.user;
-    const turnos: IBooking[] = await Booking.find({ user: idUser })
-    .populate("branch")
+    const turnos: IBooking[] = await Booking.find({ user: idUser }).populate(
+      "branch"
+    );
 
     res.status(200).send(turnos);
   } catch (error) {
@@ -29,6 +30,8 @@ export const getBookingOfUser = async (req: Request, res: Response) => {
 
 export const createBooking = async (req: Request, res: Response) => {
   const { branch, user, time, date, fullName, phone, email } = req.body;
+  const today = new Date();
+  const createdAt = today.toLocaleString("es-AR");
   const newBooking = new Booking({
     branch,
     user,
@@ -37,7 +40,23 @@ export const createBooking = async (req: Request, res: Response) => {
     phone,
     date,
     time,
+    createdAt,
   });
   await newBooking.save();
   res.send(newBooking);
+};
+
+export const getLastBooking = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+
+    const bookings = await Booking.find({ user: userId }).sort({
+      createdAt: "desc",
+    });
+    console.log(bookings);
+    res.send(bookings[0]);
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(400);
+  }
 };

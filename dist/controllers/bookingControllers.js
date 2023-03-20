@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createBooking = exports.getBookingOfUser = exports.getAllBookings = void 0;
+exports.getLastBooking = exports.createBooking = exports.getBookingOfUser = exports.getAllBookings = void 0;
 const Booking_1 = __importDefault(require("../models/Booking"));
 const getAllBookings = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -28,8 +28,7 @@ exports.getAllBookings = getAllBookings;
 const getBookingOfUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const idUser = req.params.user;
-        const turnos = yield Booking_1.default.find({ user: idUser })
-            .populate("branch");
+        const turnos = yield Booking_1.default.find({ user: idUser }).populate("branch");
         res.status(200).send(turnos);
     }
     catch (error) {
@@ -42,6 +41,8 @@ const getBookingOfUser = (req, res) => __awaiter(void 0, void 0, void 0, functio
 exports.getBookingOfUser = getBookingOfUser;
 const createBooking = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { branch, user, time, date, fullName, phone, email } = req.body;
+    const today = new Date();
+    const createdAt = today.toLocaleString("es-AR");
     const newBooking = new Booking_1.default({
         branch,
         user,
@@ -50,8 +51,24 @@ const createBooking = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         phone,
         date,
         time,
+        createdAt,
     });
     yield newBooking.save();
     res.send(newBooking);
 });
 exports.createBooking = createBooking;
+const getLastBooking = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { userId } = req.params;
+        const bookings = yield Booking_1.default.find({ user: userId }).sort({
+            createdAt: "desc",
+        });
+        console.log(bookings);
+        res.send(bookings[0]);
+    }
+    catch (err) {
+        console.log(err);
+        res.sendStatus(400);
+    }
+});
+exports.getLastBooking = getLastBooking;
