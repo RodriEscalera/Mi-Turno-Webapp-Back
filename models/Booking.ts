@@ -3,10 +3,10 @@ import { IBranch } from "./Branch";
 import { IUser } from "./Users";
 
 export interface IBooking extends Document {
-  branchId: IBranch["_id"];
+  branch: IBranch["_id"];
   date: String;
   time: String;
-  userId: IUser["_id"];
+  user: IUser["_id"];
   fullName: String;
   phone: Number;
   email: String;
@@ -16,6 +16,7 @@ const bookingSchema = new Schema({
   branch: {
     type: Schema.Types.ObjectId,
     ref: "Branch",
+    required: true,
   },
   date: {
     type: String,
@@ -28,6 +29,7 @@ const bookingSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
     ref: "Users",
+    required: true,
   },
   fullName: {
     type: String,
