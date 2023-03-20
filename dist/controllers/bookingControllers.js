@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createBooking = exports.getBookingOfUser = exports.getAllBookings = void 0;
+exports.deleteBooking = exports.updateBooking = exports.createBooking = exports.getBookingOfUser = exports.getAllBookings = void 0;
 const Booking_1 = __importDefault(require("../models/Booking"));
 const getAllBookings = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -55,3 +55,44 @@ const createBooking = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     res.send(newBooking);
 });
 exports.createBooking = createBooking;
+const updateBooking = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const { branch, user, time, date, fullName, phone, email } = req.body;
+    try {
+        const booking = yield Booking_1.default.findById(id);
+        if (!booking) {
+            res.status(404).json({ message: "Booking not found" });
+            return;
+        }
+        booking.branch = branch;
+        booking.user = user;
+        booking.time = time;
+        booking.date = date;
+        booking.fullName = fullName;
+        booking.phone = phone;
+        booking.email = email;
+        yield booking.save();
+        res.json(booking);
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Error updating booking" });
+    }
+});
+exports.updateBooking = updateBooking;
+const deleteBooking = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    try {
+        const booking = yield Booking_1.default.findByIdAndDelete(id);
+        if (!booking) {
+            res.status(404).json({ message: "Booking not found" });
+            return;
+        }
+        res.json(booking);
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Error deleting booking" });
+    }
+});
+exports.deleteBooking = deleteBooking;
