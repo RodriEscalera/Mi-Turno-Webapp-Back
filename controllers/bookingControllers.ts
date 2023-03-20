@@ -55,7 +55,7 @@ export const updateBooking = async (
       res.status(404).json({ message: "Booking not found" });
       return;
     }
-
+    
     booking.branch = branch;
     booking.user = user;
     booking.time = time;

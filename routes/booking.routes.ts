@@ -6,7 +6,6 @@ import {
   getBookingOfUser,
 } from "../controllers/bookingControllers";
 const router = express.Router();
-//
 
 router.post("/createBooking", createBooking);
 router.get("/getBookingOfUser/:user", getBookingOfUser);
