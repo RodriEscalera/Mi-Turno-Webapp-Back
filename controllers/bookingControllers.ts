@@ -1,5 +1,6 @@
 import Booking, { IBooking } from "../models/Booking";
 import { Request, Response } from "express";
+import Branch from "../models/Branch";
 
 export const getOneBooking = async (req: Request, res: Response) => {
   try {
