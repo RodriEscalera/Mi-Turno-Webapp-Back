@@ -1,6 +1,21 @@
 import Booking, { IBooking } from "../models/Booking";
 import { Request, Response } from "express";
-import Branch, { IBranch } from "../models/Branch";
+
+export const getOneBooking = async (req: Request, res: Response) => {
+  try {
+    const bookingId = req.params.id;
+    const findBooking = await Booking.findById(bookingId);
+
+    if (findBooking) {
+      res.status(200).send(findBooking);
+    } else {
+      res.status(404).json({ message: "Turno no encontrado" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Error al obtener el turno" });
+  }
+};
+
 
 export const getAllBookings = async (req: Request, res: Response) => {
   try {
