@@ -97,19 +97,29 @@ const me = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (!token)
             return res.sendStatus(400);
         const { user } = (0, token_2.validateToken)(token);
-        //console.log("ESTO ES EL USER!!!!!!!! ", user);
-        const updatedUser = yield Users_1.default.findById(user.id);
-        //console.log("ESTO ES EL UPDATEDUSER", updatedUser);
-        const payload = {
-            id: updatedUser === null || updatedUser === void 0 ? void 0 : updatedUser._id,
-            fullName: updatedUser === null || updatedUser === void 0 ? void 0 : updatedUser.fullName,
-            email: updatedUser === null || updatedUser === void 0 ? void 0 : updatedUser.email,
-            dni: updatedUser === null || updatedUser === void 0 ? void 0 : updatedUser.dni,
-            phone: updatedUser === null || updatedUser === void 0 ? void 0 : updatedUser.phone,
-            usertype: updatedUser === null || updatedUser === void 0 ? void 0 : updatedUser.usertype,
-        };
-        res.send(payload);
-        //console.log("ESTO  ES EL PAYLOAD", payload);
+        if (user.usertype === "user" || user.usertype === "operator") {
+            const updatedUser = yield Users_1.default.findById(user.id);
+            const payload = {
+                id: updatedUser === null || updatedUser === void 0 ? void 0 : updatedUser._id,
+                fullName: updatedUser === null || updatedUser === void 0 ? void 0 : updatedUser.fullName,
+                email: updatedUser === null || updatedUser === void 0 ? void 0 : updatedUser.email,
+                dni: updatedUser === null || updatedUser === void 0 ? void 0 : updatedUser.dni,
+                phone: updatedUser === null || updatedUser === void 0 ? void 0 : updatedUser.phone,
+                usertype: updatedUser === null || updatedUser === void 0 ? void 0 : updatedUser.usertype,
+            };
+            res.send(payload);
+        }
+        else {
+            const updatedAdmin = yield Admin_1.default.findById(user.id);
+            const payload = {
+                id: updatedAdmin === null || updatedAdmin === void 0 ? void 0 : updatedAdmin._id,
+                fullName: updatedAdmin === null || updatedAdmin === void 0 ? void 0 : updatedAdmin.fullName,
+                email: updatedAdmin === null || updatedAdmin === void 0 ? void 0 : updatedAdmin.email,
+                dni: updatedAdmin === null || updatedAdmin === void 0 ? void 0 : updatedAdmin.dni,
+                usertype: updatedAdmin === null || updatedAdmin === void 0 ? void 0 : updatedAdmin.usertype,
+            };
+            res.send(payload);
+        }
     }
     catch (err) {
         console.log(err);

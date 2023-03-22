@@ -82,21 +82,29 @@ export const me = async (req: Request, res: Response) => {
     const { token } = req.body;
     if (!token) return res.sendStatus(400);
     const { user }: any = validateToken(token);
-    //console.log("ESTO ES EL USER!!!!!!!! ", user);
+    if (user.usertype === "user" || user.usertype === "operator") {
+      const updatedUser = await User.findById(user.id);
 
-    const updatedUser = await User.findById(user.id);
-    //console.log("ESTO ES EL UPDATEDUSER", updatedUser);
-
-    const payload = {
-      id: updatedUser?._id,
-      fullName: updatedUser?.fullName,
-      email: updatedUser?.email,
-      dni: updatedUser?.dni,
-      phone: updatedUser?.phone,
-      usertype: updatedUser?.usertype,
-    };
-    res.send(payload);
-    //console.log("ESTO  ES EL PAYLOAD", payload);
+      const payload = {
+        id: updatedUser?._id,
+        fullName: updatedUser?.fullName,
+        email: updatedUser?.email,
+        dni: updatedUser?.dni,
+        phone: updatedUser?.phone,
+        usertype: updatedUser?.usertype,
+      };
+      res.send(payload);
+    } else {
+      const updatedAdmin = await Admin.findById(user.id);
+      const payload = {
+        id: updatedAdmin?._id,
+        fullName: updatedAdmin?.fullName,
+        email: updatedAdmin?.email,
+        dni: updatedAdmin?.dni,
+        usertype: updatedAdmin?.usertype,
+      };
+      res.send(payload);
+    }
   } catch (err) {
     console.log(err);
     res.send(401);

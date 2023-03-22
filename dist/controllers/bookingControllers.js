@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteBooking = exports.updateBooking = exports.getLastBooking = exports.createBooking = exports.getBookingOfUser = exports.getAllBookings = void 0;
 const Booking_1 = __importDefault(require("../models/Booking"));
+const Branch_1 = __importDefault(require("../models/Branch"));
 const getAllBookings = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const allBookings = yield Booking_1.default.find({});
@@ -43,6 +44,9 @@ const createBooking = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     const { branch, user, time, date, fullName, phone, email } = req.body;
     const today = new Date();
     const createdAt = today.toLocaleString("es-AR");
+    const findBranch = yield Branch_1.default.findById(branch);
+    if (!findBranch)
+        return res.sendStatus(400);
     const newBooking = new Booking_1.default({
         branch,
         user,
