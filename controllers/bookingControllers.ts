@@ -1,5 +1,6 @@
 import Booking, { IBooking } from "../models/Booking";
 import { Request, Response } from "express";
+import Branch from "../models/Branch";
 
 export const getOneBooking = async (req: Request, res: Response) => {
   try {
@@ -15,7 +16,6 @@ export const getOneBooking = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Error al obtener el turno" });
   }
 };
-
 
 export const getAllBookings = async (req: Request, res: Response) => {
   try {
