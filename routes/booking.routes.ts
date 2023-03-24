@@ -6,6 +6,7 @@ import {
   getBookingOfUser,
   getLastBooking,
   getOneBooking,
+  updateBooking,
 } from "../controllers/bookingControllers";
 const router = express.Router();
 
@@ -15,7 +16,7 @@ router.get("/getBookingOfUser/:user", getBookingOfUser);
 router.get("/getAllBookings", getAllBookings);
 router.get("/getOneBooking/:id", getOneBooking)
 router.get("/getLastBooking/:userId", getLastBooking);
-router.put("/createBooking", createBooking);
-router.delete("/deleteBooking", deleteBooking);
+router.put("/updateBooking/:id", updateBooking);
+router.delete("/deleteBooking/:id", deleteBooking);
 
 export default router;
