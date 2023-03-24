@@ -4,8 +4,8 @@ import Branch from "../models/Branch";
 
 export const getOneBooking = async (req: Request, res: Response) => {
   try {
-    const bookingId = req.params.id;
-    const findBooking = await Booking.findById(bookingId);
+    const { bookingId } = req.params;
+    const findBooking = await Booking.find({ user: bookingId });
 
     if (findBooking) {
       res.status(200).send(findBooking);
@@ -83,10 +83,10 @@ export const updateBooking = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { id } = req.params;
-  const { branch, user, time, date, fullName, phone, email } = req.body;
-
   try {
+    const { id } = req.params;
+    const { branch, user, time, date, fullName, phone, email } = req.body;
+
     const booking = await Booking.findById(id);
     if (!booking) {
       res.status(404).json({ message: "Booking not found" });

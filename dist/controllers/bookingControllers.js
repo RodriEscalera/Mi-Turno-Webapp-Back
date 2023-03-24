@@ -17,8 +17,10 @@ const Booking_1 = __importDefault(require("../models/Booking"));
 const Branch_1 = __importDefault(require("../models/Branch"));
 const getOneBooking = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const bookingId = req.params.id;
-        const findBooking = yield Booking_1.default.findById(bookingId);
+
+        const { bookingId } = req.params;
+        const findBooking = yield Booking_1.default.find({ user: bookingId });
+
         if (findBooking) {
             res.status(200).send(findBooking);
         }
@@ -95,9 +97,9 @@ const getLastBooking = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.getLastBooking = getLastBooking;
 //new
 const updateBooking = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
-    const { branch, user, time, date, fullName, phone, email } = req.body;
     try {
+        const { id } = req.params;
+        const { branch, user, time, date, fullName, phone, email } = req.body;
         const booking = yield Booking_1.default.findById(id);
         if (!booking) {
             res.status(404).json({ message: "Booking not found" });
