@@ -8,6 +8,7 @@ import {
   updateUser,
   changePasswordFirstStep,
   changePasswordSecondStep,
+  findAllOperators,
 } from "../controllers/user.controller";
 
 import { validateAdminAndOp } from "../middlewares/validations";
@@ -21,6 +22,7 @@ router.post("/findOne/:id", validateAdminAndOp, findOneUser);
 router.put("/updateUser", updateUser);
 router.post("/askForChangePassword", changePasswordFirstStep);
 router.post("/changePassword", changePasswordSecondStep);
+router.post("/findAllOperators", validateAdminAndOp, findAllOperators);
 
 export default router;
 

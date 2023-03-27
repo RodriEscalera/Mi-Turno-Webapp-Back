@@ -121,6 +121,16 @@ export const findAllUsers = async (req: Request, res: Response) => {
   }
 };
 
+export const findAllOperators = async (req: Request, res: Response) => {
+  try {
+    const allOperators = await User.find({usertype: "operator"});
+    res.send(allOperators);
+  } catch (err) {
+    console.log(err);
+    res.send(401);
+  }
+};
+
 export const findOneUser = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
