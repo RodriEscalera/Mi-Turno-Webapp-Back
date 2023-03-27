@@ -14,9 +14,11 @@ const router = express.Router();
 router.post("/createBooking", createBooking);
 router.get("/getBookingOfUser/:user", getBookingOfUser);
 router.get("/getAllBookings", getAllBookings);
-router.get("/getOneBooking/:id", getOneBooking)
+router.get("/getOneBooking/:id", getOneBooking);
 router.get("/getLastBooking/:userId", getLastBooking);
+
 router.put("/updateBooking/:id", updateBooking);
+
 router.delete("/deleteBooking/:id", deleteBooking);
 
 export default router;
