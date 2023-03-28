@@ -43,4 +43,5 @@ const bookingSchema = new mongoose_1.Schema({
         default: false,
     },
 });
+bookingSchema.index({ branch: 1, date: 1, time: 1 }, { unique: true });
 exports.default = (0, mongoose_1.model)("Booking", bookingSchema);

@@ -37,7 +37,6 @@ const userSchema = new Schema({
   dni: {
     type: Number,
     required: true,
-    unique: true,
   },
   usertype: {
     type: String,
@@ -59,6 +58,8 @@ const userSchema = new Schema({
     },
   ],
 });
+
+userSchema.index({ email: 1, dni: 1 }, { unique: true });
 
 userSchema.pre<IUser>("save", async function () {
   const user = this;

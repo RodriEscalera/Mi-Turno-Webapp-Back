@@ -1,5 +1,6 @@
 import Booking, { IBooking } from "../models/Booking";
 import { Request, Response } from "express";
+import Branch from "../models/Branch";
 
 export const getOneBooking = async (req: Request, res: Response) => {
   try {
@@ -15,7 +16,6 @@ export const getOneBooking = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Error al obtener el turno" });
   }
 };
-
 
 export const getAllBookings = async (req: Request, res: Response) => {
   try {
@@ -47,8 +47,9 @@ export const createBooking = async (req: Request, res: Response) => {
   const { branch, user, time, date, fullName, phone, email } = req.body;
   const today = new Date();
   const createdAt = today.toLocaleString("es-AR");
-  const findBranch = await Branch.findById(branch);
-  if (!findBranch) return res.sendStatus(400);
+  const findBranch = await Branch.find({ branch, time, date });
+  if (findBranch) return res.sendStatus(400);
+
   const newBooking = new Booking({
     branch,
     user,

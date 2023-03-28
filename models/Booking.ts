@@ -56,4 +56,6 @@ const bookingSchema = new Schema({
   },
 });
 
+bookingSchema.index({ branch: 1, date: 1, time: 1 }, { unique: true });
+
 export default model<IBooking>("Booking", bookingSchema);

@@ -12,9 +12,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteBooking = exports.updateBooking = exports.getLastBooking = exports.createBooking = exports.getBookingOfUser = exports.getAllBookings = void 0;
+exports.deleteBooking = exports.updateBooking = exports.getLastBooking = exports.createBooking = exports.getBookingOfUser = exports.getAllBookings = exports.getOneBooking = void 0;
 const Booking_1 = __importDefault(require("../models/Booking"));
 const Branch_1 = __importDefault(require("../models/Branch"));
+const getOneBooking = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const bookingId = req.params.id;
+        const findBooking = yield Booking_1.default.findById(bookingId);
+        if (findBooking) {
+            res.status(200).send(findBooking);
+        }
+        else {
+            res.status(404).json({ message: "Turno no encontrado" });
+        }
+    }
+    catch (error) {
+        res.status(500).json({ message: "Error al obtener el turno" });
+    }
+});
+exports.getOneBooking = getOneBooking;
 const getAllBookings = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const allBookings = yield Booking_1.default.find({});
@@ -44,8 +60,8 @@ const createBooking = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     const { branch, user, time, date, fullName, phone, email } = req.body;
     const today = new Date();
     const createdAt = today.toLocaleString("es-AR");
-    const findBranch = yield Branch_1.default.findById(branch);
-    if (!findBranch)
+    const findBranch = yield Branch_1.default.find({ branch, time, date });
+    if (findBranch)
         return res.sendStatus(400);
     const newBooking = new Booking_1.default({
         branch,

@@ -12,7 +12,7 @@ export const register = async (req: Request, res: Response) => {
     const { fullName, email, password, dni } = req.body;
     const usertype = "user";
     const exists = await User.findOne({ email });
-    if (exists) return res.sendStatus(400);
+    // if (exists) return res.sendStatus(400);
     const newUser = new User({
       fullName,
       email,

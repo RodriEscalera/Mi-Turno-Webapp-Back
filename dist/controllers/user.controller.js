@@ -24,8 +24,7 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const { fullName, email, password, dni } = req.body;
         const usertype = "user";
         const exists = yield Users_1.default.findOne({ email });
-        if (exists)
-            return res.sendStatus(400);
+        // if (exists) return res.sendStatus(400);
         const newUser = new Users_1.default({
             fullName,
             email,
