@@ -123,7 +123,7 @@ export const findAllUsers = async (req: Request, res: Response) => {
 
 export const findAllOperators = async (req: Request, res: Response) => {
   try {
-    const allOperators = await User.find({usertype: "operator"});
+    const allOperators = await User.find({ usertype: "operator" });
     res.send(allOperators);
   } catch (err) {
     console.log(err);
@@ -144,7 +144,6 @@ export const findOneUser = async (req: Request, res: Response) => {
 
 export const updateUser = async (req: Request, res: Response) => {
   try {
-    // console.log(" REQ.BODY", req.body);
     const { _id, fullName, email, dni, phone } = req.body;
     if (
       _id === "" ||
@@ -155,12 +154,10 @@ export const updateUser = async (req: Request, res: Response) => {
     ) {
       return res.sendStatus(400);
     }
-    //console.log("ESTO ES REQ.BODY NENEEE",req.body);
 
     const user = await User.findById(_id);
     await user?.updateOne({ fullName, email, dni, phone });
     await user?.save();
-    //console.log(user);
 
     res.json(user);
   } catch (error) {

@@ -4,8 +4,8 @@ import Branch from "../models/Branch";
 
 export const getOneBooking = async (req: Request, res: Response) => {
   try {
-    const { bookingId } = req.params;
-    const findBooking = await Booking.find({ user: bookingId });
+    const { id } = req.params;
+    const findBooking = await Booking.findById( id ).populate("branch");
 
     if (findBooking) {
       res.status(200).send(findBooking);
