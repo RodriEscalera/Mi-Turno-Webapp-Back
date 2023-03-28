@@ -16,16 +16,29 @@ exports.registerAdmin = exports.asignbranch = exports.createOperator = void 0;
 const Users_1 = __importDefault(require("../models/Users"));
 const Branch_1 = __importDefault(require("../models/Branch"));
 const Admin_1 = __importDefault(require("../models/Admin"));
+const emails_1 = require("../services/emails");
 const createOperator = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { fullName, email, password, dni, usertype } = req.body;
-        const newOperator = new Users_1.default({ fullName, email, password, dni, usertype });
+        const { fullName, email, password, branch, dni } = req.body;
+        const usertype = "operator";
+        const exists = yield Users_1.default.findOne({ email });
+        if (exists)
+            return res.sendStatus(400);
+        const newOperator = new Users_1.default({
+            fullName,
+            email,
+            dni,
+            password,
+            branch,
+            usertype,
+        });
+        (0, emails_1.sendRegisterEmail)(newOperator);
         yield newOperator.save();
         res.send(newOperator);
     }
     catch (err) {
         console.log(err);
-        res.sendStatus(400);
+        res.sendStatus(401);
     }
 });
 exports.createOperator = createOperator;
