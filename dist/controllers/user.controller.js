@@ -140,7 +140,10 @@ const findAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.findAllUsers = findAllUsers;
 const findAllOperators = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const allOperators = yield Users_1.default.find({ usertype: "operator" });
+        const allOperators = yield Users_1.default.find({ usertype: "operator" }).populate({
+            path: "branch",
+            select: "name",
+        });
         res.send(allOperators);
     }
     catch (err) {
