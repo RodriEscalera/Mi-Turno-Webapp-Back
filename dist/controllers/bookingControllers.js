@@ -17,8 +17,8 @@ const Booking_1 = __importDefault(require("../models/Booking"));
 const Branch_1 = __importDefault(require("../models/Branch"));
 const getOneBooking = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { id } = req.params;
-        const findBooking = yield Booking_1.default.findById(id).populate("branch");
+        const { bookingId } = req.params;
+        const findBooking = yield Booking_1.default.find({ user: bookingId });
         if (findBooking) {
             res.status(200).send(findBooking);
         }
