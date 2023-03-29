@@ -44,7 +44,7 @@ const userSchema = new Schema({
     branch: [
         {
             type: Schema.Types.ObjectId,
-            ref: "branch",
+            ref: "Branch",
         },
     ],
     booking: [
