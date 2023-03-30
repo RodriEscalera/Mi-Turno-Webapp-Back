@@ -2,11 +2,13 @@ import express from "express";
 import {
   createBooking,
   deleteBooking,
+  getSoldOutBookingPerMonth,
   getAllBookings,
   getBookingOfUser,
   getLastBooking,
   getOneBooking,
   updateBooking,
+  getScheduleOfBooking,
 } from "../controllers/bookingControllers";
 const router = express.Router();
 
@@ -20,5 +22,9 @@ router.get("/getLastBooking/:userId", getLastBooking);
 router.put("/updateBooking/:id", updateBooking);
 
 router.delete("/deleteBooking/:id", deleteBooking);
+
+router.post("/getSoldOutBookingPerMonth", getSoldOutBookingPerMonth);
+
+router.post("/getScheduleOfBooking", getScheduleOfBooking);
 
 export default router;

@@ -12,15 +12,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteBooking = exports.updateBooking = exports.getLastBooking = exports.createBooking = exports.getBookingOfUser = exports.getAllBookings = exports.getOneBooking = void 0;
+exports.getScheduleOfBooking = exports.getSoldOutBookingPerMonth = exports.deleteBooking = exports.updateBooking = exports.getLastBooking = exports.createBooking = exports.getBookingOfUser = exports.getAllBookings = exports.getOneBooking = void 0;
 const Booking_1 = __importDefault(require("../models/Booking"));
 const Branch_1 = __importDefault(require("../models/Branch"));
+const functions_1 = require("../utils/functions");
 const getOneBooking = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-
-        const { bookingId } = req.params;
-        const findBooking = yield Booking_1.default.find({ user: bookingId });
-
+        const { id } = req.params;
+        const findBooking = yield Booking_1.default.findById(id).populate("branch");
         if (findBooking) {
             res.status(200).send(findBooking);
         }
@@ -65,6 +64,11 @@ const createBooking = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     const findBranch = yield Branch_1.default.findById(branch);
     if (!findBranch)
         return res.sendStatus(400);
+    const exists = yield Booking_1.default.findOne({ branch, date, time });
+    if (exists) {
+        console.log("este turno ya existe, mira:", exists);
+        return res.sendStatus(400);
+    }
     const newBooking = new Booking_1.default({
         branch,
         user,
@@ -137,3 +141,45 @@ const deleteBooking = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.deleteBooking = deleteBooking;
+const getSoldOutBookingPerMonth = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { date, branch } = req.body;
+        const month = date.split("-")[1];
+        const bookings = yield Booking_1.default.find({
+            date: { $regex: `-${month}-` },
+            branch: branch,
+        });
+        const findBranch = yield Branch_1.default.findById(branch);
+        console.log(findBranch);
+        const reserves = bookings.map((element) => element.date);
+        const toShow = (0, functions_1.countWordOccurrences)(reserves);
+        const soldOut = [];
+        toShow.forEach((element) => {
+            for (const key in element) {
+                if (element[key] >= 8) {
+                    soldOut.push(key);
+                }
+            }
+        });
+        console.log(soldOut);
+        res.send(soldOut);
+    }
+    catch (err) {
+        console.log(err);
+        res.sendStatus(400);
+    }
+});
+exports.getSoldOutBookingPerMonth = getSoldOutBookingPerMonth;
+const getScheduleOfBooking = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { date, branch } = req.body;
+        const bookings = yield Booking_1.default.find({ date, branch });
+        const returning = bookings.map((element) => element.time);
+        res.send(returning);
+    }
+    catch (err) {
+        console.log(err);
+        res.sendStatus(400);
+    }
+});
+exports.getScheduleOfBooking = getScheduleOfBooking;

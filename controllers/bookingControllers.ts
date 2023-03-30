@@ -1,11 +1,12 @@
 import Booking, { IBooking } from "../models/Booking";
 import { Request, Response } from "express";
 import Branch from "../models/Branch";
+import { countWordOccurrences } from "../utils/functions";
 
 export const getOneBooking = async (req: Request, res: Response) => {
   try {
-    const { bookingId } = req.params;
-    const findBooking = await Booking.find({ user: bookingId });
+    const { id } = req.params;
+    const findBooking = await Booking.findById(id).populate("branch");
 
     if (findBooking) {
       res.status(200).send(findBooking);
@@ -49,6 +50,11 @@ export const createBooking = async (req: Request, res: Response) => {
   const createdAt = today.toLocaleString("es-AR");
   const findBranch = await Branch.findById(branch);
   if (!findBranch) return res.sendStatus(400);
+  const exists = await Booking.findOne({ branch, date, time });
+  if (exists) {
+    console.log("este turno ya existe, mira:", exists);
+    return res.sendStatus(400);
+  }
   const newBooking = new Booking({
     branch,
     user,
@@ -126,5 +132,50 @@ export const deleteBooking = async (
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error deleting booking" });
+  }
+};
+
+export const getSoldOutBookingPerMonth = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const { date, branch } = req.body;
+    const month = date.split("-")[1];
+
+    const bookings = await Booking.find({
+      date: { $regex: `-${month}-` },
+      branch: branch,
+    });
+    const findBranch = await Branch.findById(branch);
+    console.log(findBranch);
+    const reserves = bookings.map((element) => element.date);
+    const toShow = countWordOccurrences(reserves);
+    const soldOut: string[] = [];
+    toShow.forEach((element) => {
+      for (const key in element) {
+        if (element[key] >= 8) {
+          soldOut.push(key);
+        }
+      }
+    });
+    console.log(soldOut);
+    res.send(soldOut);
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(400);
+  }
+};
+
+export const getScheduleOfBooking = async (req: Request, res: Response) => {
+  try {
+    const { date, branch } = req.body;
+
+    const bookings = await Booking.find({ date, branch });
+    const returning = bookings.map((element) => element.time);
+    res.send(returning);
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(400);
   }
 };
