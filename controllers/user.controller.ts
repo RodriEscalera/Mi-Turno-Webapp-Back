@@ -6,6 +6,7 @@ import { validateToken } from "../config/token";
 import { IBranch } from "../models/Branch";
 import Admin from "../models/Admin";
 import { sendMailChangePassword, sendRegisterEmail } from "../services/emails";
+import Branch from "../models/Branch";
 export const register = async (req: Request, res: Response) => {
   try {
     console.log(req.body);
@@ -123,7 +124,11 @@ export const findAllUsers = async (req: Request, res: Response) => {
 
 export const findAllOperators = async (req: Request, res: Response) => {
   try {
-    const allOperators = await User.find({usertype: "operator"});
+    const allOperators = await User.find({ usertype: "operator" }).populate({
+      path: "branch",
+      select: "name",
+    });
+
     res.send(allOperators);
   } catch (err) {
     console.log(err);
