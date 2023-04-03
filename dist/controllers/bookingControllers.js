@@ -54,6 +54,7 @@ const functions_1 = require("../utils/functions");
 const getOneBooking = (req, res) =>
   __awaiter(void 0, void 0, void 0, function* () {
     try {
+
       const { bookingId } = req.params;
       const findBooking = yield Booking_1.default.find({ user: bookingId });
       if (findBooking) {
@@ -63,6 +64,7 @@ const getOneBooking = (req, res) =>
       }
     } catch (error) {
       res.status(500).json({ message: "Error al obtener el turno" });
+
     }
   });
 exports.getOneBooking = getOneBooking;

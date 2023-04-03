@@ -166,7 +166,6 @@ const findOneUser = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.findOneUser = findOneUser;
 const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        // console.log(" REQ.BODY", req.body);
         const { _id, fullName, email, dni, phone } = req.body;
         if (_id === "" ||
             fullName === "" ||
@@ -175,11 +174,9 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             phone === "") {
             return res.sendStatus(400);
         }
-        //console.log("ESTO ES REQ.BODY NENEEE",req.body);
         const user = yield Users_1.default.findById(_id);
         yield (user === null || user === void 0 ? void 0 : user.updateOne({ fullName, email, dni, phone }));
         yield (user === null || user === void 0 ? void 0 : user.save());
-        //console.log(user);
         res.json(user);
     }
     catch (error) {

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import User from "../models/Users";
-import Branch from "../models/Branch";
+import Branch, { IBranch } from "../models/Branch";
 import Admin from "../models/Admin";
 import { sendRegisterEmail } from "../services/emails";
 
@@ -34,14 +34,17 @@ export const asignbranch = async (req: Request, res: Response) => {
     const branch = await Branch.findById(branchId);
 
     await operator?.updateOne({ branch: [...operator.branch, branch?.id] });
+    await branch?.updateOne({ operator: [...branch.operator, operator?.id] });
     await operator?.save();
+    await branch?.save();
     res.send(operator);
   } catch (err) {
     console.log(err);
     res.sendStatus(400);
   }
 };
-//
+
+
 export const registerAdmin = async (req: Request, res: Response) => {
   try {
     const { fullName, dni, email, password, usertype } = req.body;
