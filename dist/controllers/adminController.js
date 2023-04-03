@@ -22,8 +22,11 @@ const createOperator = (req, res) => __awaiter(void 0, void 0, void 0, function*
         const { fullName, email, password, branch, dni } = req.body;
         const usertype = "operator";
         const exists = yield Users_1.default.findOne({ email });
-        if (exists)
+        const assignedBranch = yield Branch_1.default.findById(branch);
+        if (exists) {
+            console.log("si existo", exists);
             return res.sendStatus(400);
+        }
         const newOperator = new Users_1.default({
             fullName,
             email,
@@ -34,6 +37,8 @@ const createOperator = (req, res) => __awaiter(void 0, void 0, void 0, function*
         });
         (0, emails_1.sendRegisterEmail)(newOperator);
         yield newOperator.save();
+        yield (assignedBranch === null || assignedBranch === void 0 ? void 0 : assignedBranch.updateOne({ operator: [...assignedBranch.operator, newOperator === null || newOperator === void 0 ? void 0 : newOperator._id] }));
+        yield (assignedBranch === null || assignedBranch === void 0 ? void 0 : assignedBranch.save());
         res.send(newOperator);
     }
     catch (err) {

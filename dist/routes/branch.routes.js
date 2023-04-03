@@ -10,4 +10,5 @@ router.post("/createbranch", branchControllers_1.createBranch, (req, res) => res
 router.put("/branches/:id", branchControllers_1.updateBranch, (req, res) => res.json("updating a branch"));
 router.delete("/branches/:id", branchControllers_1.deleteBranch, (req, res) => res.json("getting a picked branch"));
 router.get("/getBookingsByBranch/:id", branchControllers_1.getBookingsByBranch);
+router.get("/getOperatorsByBranch/:id", branchControllers_1.getOperatorsByBranch);
 exports.default = router;

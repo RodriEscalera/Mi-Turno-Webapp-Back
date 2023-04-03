@@ -105,6 +105,7 @@ const me = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 email: updatedUser === null || updatedUser === void 0 ? void 0 : updatedUser.email,
                 dni: updatedUser === null || updatedUser === void 0 ? void 0 : updatedUser.dni,
                 phone: updatedUser === null || updatedUser === void 0 ? void 0 : updatedUser.phone,
+                branch: updatedUser === null || updatedUser === void 0 ? void 0 : updatedUser.branch,
                 usertype: updatedUser === null || updatedUser === void 0 ? void 0 : updatedUser.usertype,
             };
             res.send(payload);
