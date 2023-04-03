@@ -117,7 +117,7 @@ const getBookingsByBranch = (req, res) => __awaiter(void 0, void 0, void 0, func
     try {
         const branchId = req.params.id;
         console.log(branchId);
-        const branch = yield Branch_1.default.findById(branchId);
+        const branch = yield Branch_1.default.findById(branchId).populate("booking");
         console.log("esto es el branch:", branch);
         if (!branch) {
             return res.status(404).json({ message: "Branch not found" });
