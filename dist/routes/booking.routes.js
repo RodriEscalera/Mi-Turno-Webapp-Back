@@ -14,4 +14,6 @@ router.get("/getOneBooking/:id", bookingControllers_1.getOneBooking);
 router.get("/getLastBooking/:userId", bookingControllers_1.getLastBooking);
 router.put("/updateBooking/:id", bookingControllers_1.updateBooking);
 router.delete("/deleteBooking/:id", bookingControllers_1.deleteBooking);
+router.post("/getSoldOutBookingPerMonth", bookingControllers_1.getSoldOutBookingPerMonth);
+router.post("/getScheduleOfBooking", bookingControllers_1.getScheduleOfBooking);
 exports.default = router;

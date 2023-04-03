@@ -11,5 +11,6 @@ const router = express_1.default.Router();
 router.post("/createoperator", validations_1.validateAdmin, adminController_1.createOperator);
 router.post("/asignbranch", validations_1.validateAdmin, adminController_1.asignbranch);
 router.post("/registerAdmin", adminController_2.registerAdmin);
+router.put("/updateOperator/:id", validations_1.validateAdmin, adminController_1.updateOperator);
 exports.default = router;
 //

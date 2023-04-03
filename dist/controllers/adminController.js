@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.registerAdmin = exports.asignbranch = exports.createOperator = void 0;
+exports.updateOperator = exports.registerAdmin = exports.asignbranch = exports.createOperator = void 0;
 const Users_1 = __importDefault(require("../models/Users"));
 const Branch_1 = __importDefault(require("../models/Branch"));
 const Admin_1 = __importDefault(require("../models/Admin"));
@@ -75,3 +75,20 @@ const registerAdmin = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.registerAdmin = registerAdmin;
+const updateOperator = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        // console.log(" REQ.BODY", req.body);
+        const { _id, fullName, email, dni, password, branch } = req.body;
+        console.log("ESTO ES REQ.BODY NENEEE", req.body);
+        const user = yield Users_1.default.findById(_id);
+        yield (user === null || user === void 0 ? void 0 : user.updateOne({ fullName, email, dni, password, branch }));
+        yield (user === null || user === void 0 ? void 0 : user.save());
+        console.log("esto es el USER", user);
+        res.json(user);
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Error updating operator" });
+    }
+});
+exports.updateOperator = updateOperator;
