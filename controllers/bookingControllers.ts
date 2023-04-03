@@ -43,7 +43,7 @@ export const getBookingOfUser = async (req: Request, res: Response) => {
       .json({ message: "Hubo un error al obtener los turnos del usuario." });
   }
 };
-
+//
 export const createBooking = async (req: Request, res: Response) => {
   const { branch, user, time, date, fullName, phone, email } = req.body;
   const today = new Date();
