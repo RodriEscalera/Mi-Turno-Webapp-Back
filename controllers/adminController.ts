@@ -6,10 +6,15 @@ import { sendRegisterEmail } from "../services/emails";
 
 export const createOperator = async (req: Request, res: Response) => {
   try {
+
     const { fullName, email, password, branch, dni } = req.body;
     const usertype = "operator";
     const exists = await User.findOne({ email });
-    if (exists) return res.sendStatus(400);
+    const assignedBranch = await Branch.findById(branch);
+    if (exists) {
+      console.log("si existo", exists);
+      
+      return res.sendStatus(400);}
     const newOperator = new User({
       fullName,
       email,
@@ -20,6 +25,8 @@ export const createOperator = async (req: Request, res: Response) => {
     });
     sendRegisterEmail(newOperator);
     await newOperator.save();
+    await assignedBranch?.updateOne({ operator: [...assignedBranch.operator, newOperator?._id] });
+    await assignedBranch?.save();
     res.send(newOperator);
   } catch (err) {
     console.log(err);

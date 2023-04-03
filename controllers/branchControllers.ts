@@ -118,23 +118,31 @@ export const deleteBranch = async (
 
 export const getBookingsByBranch = async (req: Request, res: Response) => {
   try {
-    const branchId = req.params.id;
-    console.log(branchId);
-    
+    const branchId = req.params.id;    
     const branch = await Branch.findById(branchId).populate("booking")
-
-    console.log("esto es el branch:", branch);
-
     if (!branch) {
       return res.status(404).json({ message: "Branch not found" });
     }
-
     const bookings = branch.booking;
-    console.log("esto es el booking:", bookings);
-
     res.status(200).json({ bookings });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
   }
 };
+
+export const getOperatorsByBranch = async (req: Request, res: Response) => {
+  try {
+    const branchId = req.params.id;    
+    const branch = await Branch.findById(branchId).populate("operator")
+    if (!branch) {
+      return res.status(404).json({ message: "Branch not found" });
+    }
+    const operators = branch.operator;
+    res.status(200).json({ operators });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+
+  }
+}

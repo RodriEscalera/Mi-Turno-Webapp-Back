@@ -92,6 +92,7 @@ export const me = async (req: Request, res: Response) => {
         email: updatedUser?.email,
         dni: updatedUser?.dni,
         phone: updatedUser?.phone,
+        branch: updatedUser?.branch,
         usertype: updatedUser?.usertype,
       };
       res.send(payload);

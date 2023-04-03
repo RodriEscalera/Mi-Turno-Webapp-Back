@@ -9,6 +9,7 @@ import {
   deleteBranch,
   getAllBranches,
   getBookingsByBranch,
+  getOperatorsByBranch,
 } from "../controllers/branchControllers";
 
 router.get("/allbranches", getAllBranches);
@@ -32,5 +33,5 @@ router.delete("/branches/:id", deleteBranch, (req, res) =>
 );
 
 router.get("/getBookingsByBranch/:id", getBookingsByBranch)
-
+router.get("/getOperatorsByBranch/:id", getOperatorsByBranch)
 export default router;
