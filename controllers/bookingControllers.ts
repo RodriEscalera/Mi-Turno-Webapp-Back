@@ -48,6 +48,7 @@ export const createBooking = async (req: Request, res: Response) => {
   const today = new Date();
   const createdAt = today.toLocaleString("es-AR");
   const findBranch = await Branch.findById(branch);
+  
   if (!findBranch) return res.sendStatus(400);
   const newBooking = new Booking({
     branch,

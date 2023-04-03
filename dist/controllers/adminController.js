@@ -48,7 +48,9 @@ const asignbranch = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         const operator = yield Users_1.default.findById(opId);
         const branch = yield Branch_1.default.findById(branchId);
         yield (operator === null || operator === void 0 ? void 0 : operator.updateOne({ branch: [...operator.branch, branch === null || branch === void 0 ? void 0 : branch.id] }));
+        yield (branch === null || branch === void 0 ? void 0 : branch.updateOne({ operator: [...branch.operator, operator === null || operator === void 0 ? void 0 : operator.id] }));
         yield (operator === null || operator === void 0 ? void 0 : operator.save());
+        yield (branch === null || branch === void 0 ? void 0 : branch.save());
         res.send(operator);
     }
     catch (err) {
@@ -57,7 +59,6 @@ const asignbranch = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.asignbranch = asignbranch;
-//
 const registerAdmin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { fullName, dni, email, password, usertype } = req.body;
