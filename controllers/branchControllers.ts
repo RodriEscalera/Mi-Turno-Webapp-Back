@@ -121,7 +121,7 @@ export const getBookingsByBranch = async (req: Request, res: Response) => {
     const branchId = req.params.id;
     console.log(branchId);
     
-    const branch = await Branch.findById(branchId)
+    const branch = await Branch.findById(branchId).populate("booking")
 
     console.log("esto es el branch:", branch);
 

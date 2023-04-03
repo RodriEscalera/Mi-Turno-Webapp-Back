@@ -6,8 +6,7 @@ import { countWordOccurrences } from "../utils/functions";
 export const getOneBooking = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const findBooking = await Booking.findById( id ).populate("branch");
-
+    const findBooking = await Booking.findById(id).populate("branch");
 
     if (findBooking) {
       res.status(200).send(findBooking);
@@ -44,13 +43,13 @@ export const getBookingOfUser = async (req: Request, res: Response) => {
       .json({ message: "Hubo un error al obtener los turnos del usuario." });
   }
 };
-
+//
 export const createBooking = async (req: Request, res: Response) => {
   const { branch, user, time, date, fullName, phone, email } = req.body;
   const today = new Date();
   const createdAt = today.toLocaleString("es-AR");
   const findBranch = await Branch.findById(branch);
-  
+
   if (!findBranch) return res.sendStatus(400);
   const exists = await Booking.findOne({ branch, date, time });
   if (exists) {
@@ -68,6 +67,9 @@ export const createBooking = async (req: Request, res: Response) => {
     createdAt,
   });
   await newBooking.save();
+  await findBranch?.updateOne({
+    booking: [...findBranch.booking, newBooking?._id],
+  });
   res.send(newBooking);
 };
 
