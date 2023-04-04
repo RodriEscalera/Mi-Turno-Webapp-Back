@@ -57,7 +57,6 @@ const asignbranch = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.asignbranch = asignbranch;
-//
 const registerAdmin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { fullName, dni, email, password, usertype } = req.body;
@@ -76,14 +75,20 @@ const registerAdmin = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 exports.registerAdmin = registerAdmin;
 const updateOperator = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        // console.log(" REQ.BODY", req.body);
-        const { _id, fullName, email, dni, password, branch } = req.body;
-        console.log("ESTO ES REQ.BODY NENEEE", req.body);
-        const user = yield Users_1.default.findById(_id);
-        yield (user === null || user === void 0 ? void 0 : user.updateOne({ fullName, email, dni, password, branch }));
-        yield (user === null || user === void 0 ? void 0 : user.save());
-        console.log("esto es el USER", user);
-        res.json(user);
+        const { fullName, email, dni, branch } = req.body;
+        const { id } = req.params;
+        const operator = yield Users_1.default.findById(id);
+        if (!operator) {
+            res.status(404).json({ message: "operator not found" });
+            return;
+        }
+        operator.branch = branch;
+        operator.fullName = fullName;
+        operator.dni = dni;
+        operator.email = email;
+        console.log("esto es el USER", operator);
+        yield operator.save();
+        res.json(operator);
     }
     catch (error) {
         console.error(error);
