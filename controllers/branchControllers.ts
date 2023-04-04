@@ -33,8 +33,8 @@ export const getAllBranch = async (
 
 export const getBranch = async (req: Request, res: Response): Promise<void> => {
   try {
-    const branchId = req.params.id;
-    const result = await Branch.findById(branchId);
+    const { id } = req.params;
+    const result = await Branch.findById(id);
 
     if (result) {
       res.status(200).json(result);
@@ -146,3 +146,4 @@ export const getOperatorsByBranch = async (req: Request, res: Response) => {
 
   }
 }
+

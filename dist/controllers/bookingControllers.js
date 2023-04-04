@@ -57,7 +57,6 @@ const getBookingOfUser = (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.getBookingOfUser = getBookingOfUser;
-//
 const createBooking = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { branch, user, time, date, fullName, phone, email } = req.body;
     const today = new Date();

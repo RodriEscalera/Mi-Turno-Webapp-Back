@@ -40,8 +40,8 @@ const getAllBranch = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.getAllBranch = getAllBranch;
 const getBranch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const branchId = req.params.id;
-        const result = yield Branch_1.default.findById(branchId);
+        const { id } = req.params;
+        const result = yield Branch_1.default.findById(id);
         if (result) {
             res.status(200).json(result);
         }
