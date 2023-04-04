@@ -41,12 +41,10 @@ const userSchema = new Schema({
         enum: ["admin", "operator", "user"],
         required: true,
     },
-    branch: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: "Branch",
-        },
-    ],
+    branch: {
+        type: Schema.Types.ObjectId,
+        ref: "Branch",
+    },
     booking: [
         {
             type: Schema.Types.ObjectId,

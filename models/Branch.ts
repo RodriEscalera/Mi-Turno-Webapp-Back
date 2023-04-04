@@ -7,8 +7,8 @@ export interface IBranch extends Document {
   location: string;
   phone: string;
   email: string;
-  booking: IBooking;
-  operator: [IUser["_id"]];
+  booking: [IBooking["_id"]];
+  operator: IUser["_id"];
   closingTime: string;
   startingTime: string;
 }

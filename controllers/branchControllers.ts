@@ -1,5 +1,6 @@
-import Branch from "../models/Branch";
+import Branch, { IBranch } from "../models/Branch";
 import { Request, Response } from "express";
+import Booking, { IBooking } from "../models/Booking";
 
 export const getAllBranches = async (
   req: Request,
@@ -114,3 +115,35 @@ export const deleteBranch = async (
     res.status(500).json({ message: "Error deleting branch" });
   }
 };
+
+export const getBookingsByBranch = async (req: Request, res: Response) => {
+  try {
+    const branchId = req.params.id;    
+    const branch = await Branch.findById(branchId).populate("booking")
+    if (!branch) {
+      return res.status(404).json({ message: "Branch not found" });
+    }
+    const bookings = branch.booking;
+    res.status(200).json({ bookings });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const getOperatorsByBranch = async (req: Request, res: Response) => {
+  try {
+    const branchId = req.params.id;    
+    const branch = await Branch.findById(branchId).populate("operator")
+    if (!branch) {
+      return res.status(404).json({ message: "Branch not found" });
+    }
+    const operators = branch.operator;
+    res.status(200).json({ operators });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+
+  }
+}
+
