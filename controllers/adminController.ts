@@ -69,17 +69,23 @@ export const registerAdmin = async (req: Request, res: Response) => {
 
 export const updateOperator = async (req: Request, res: Response) => {
   try {
-    // console.log(" REQ.BODY", req.body);
-    const { _id, fullName, email, dni, password, branch } = req.body;
+    const { fullName, email, dni, branch } = req.body;
+    const { id } = req.params;
 
-    console.log("ESTO ES REQ.BODY NENEEE", req.body);
+    const operator = await User.findById(id);
 
-    const user = await User.findById(_id);
-    await user?.updateOne({ fullName, email, dni, password, branch });
-    await user?.save();
-    console.log("esto es el USER", user);
+    if (!operator) {
+      res.status(404).json({ message: "operator not found" });
+      return;
+    }
+    operator.branch = branch;
+    operator.fullName = fullName;
+    operator.dni = dni;
+    operator.email = email;
+    console.log("esto es el USER", operator);
 
-    res.json(user);
+    await operator.save();
+    res.json(operator);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error updating operator" });
