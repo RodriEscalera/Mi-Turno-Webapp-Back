@@ -6,7 +6,7 @@ const branchControllers_1 = require("../controllers/branchControllers");
 const validations_1 = require("../middlewares/validations");
 router.get("/allbranches", branchControllers_1.getAllBranches);
 router.get("/branches/:page", branchControllers_1.getAllBranch);
-router.get("/onebranch/:id", branchControllers_1.getBranch, (req, res) => res.json("getting single branch"));
+router.post("/onebranch/:id", branchControllers_1.getBranch, (req, res) => res.json("getting single branch"));
 router.post("/createbranch", branchControllers_1.createBranch, validations_1.validateAdmin, (req, res) => res.json("posting a new branch"));
 router.put("/updateBranch/:id", branchControllers_1.updateBranch, validations_1.validateAdmin, (req, res) => res.json("updating a branch"));
 router.delete("/deleteBranch/:id", branchControllers_1.deleteBranch, validations_1.validateAdmin, (req, res) => res.json("getting a picked branch"));

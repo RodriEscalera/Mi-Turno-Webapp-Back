@@ -17,7 +17,7 @@ router.get("/allbranches", getAllBranches);
 
 router.get("/branches/:page", getAllBranch);
 
-router.get("/onebranch/:id", getBranch, (req, res) =>
+router.post("/onebranch/:id", getBranch, (req, res) =>
   res.json("getting single branch")
 );
 

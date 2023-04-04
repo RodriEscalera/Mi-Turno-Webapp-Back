@@ -74,7 +74,7 @@ export const updateBranch = async (
   res: Response
 ): Promise<void> => {
   const { id } = req.params;
-  const { name, location, phone, email } = req.body;
+  const { name, startingTime, closingTime, phone, email } = req.body;
 
   try {
     const branch = await Branch.findById(id);
@@ -84,9 +84,10 @@ export const updateBranch = async (
     }
 
     branch.name = name;
-    branch.location = location;
     branch.phone = phone;
     branch.email = email;
+    branch.startingTime = startingTime;
+    branch.closingTime = closingTime;
 
     await branch.save();
     res.json(branch);
@@ -118,8 +119,8 @@ export const deleteBranch = async (
 
 export const getBookingsByBranch = async (req: Request, res: Response) => {
   try {
-    const branchId = req.params.id;    
-    const branch = await Branch.findById(branchId).populate("booking")
+    const branchId = req.params.id;
+    const branch = await Branch.findById(branchId).populate("booking");
     if (!branch) {
       return res.status(404).json({ message: "Branch not found" });
     }
@@ -133,8 +134,8 @@ export const getBookingsByBranch = async (req: Request, res: Response) => {
 
 export const getOperatorsByBranch = async (req: Request, res: Response) => {
   try {
-    const branchId = req.params.id;    
-    const branch = await Branch.findById(branchId).populate("operator")
+    const branchId = req.params.id;
+    const branch = await Branch.findById(branchId).populate("operator");
     if (!branch) {
       return res.status(404).json({ message: "Branch not found" });
     }
@@ -143,7 +144,5 @@ export const getOperatorsByBranch = async (req: Request, res: Response) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
-
   }
-}
-
+};
