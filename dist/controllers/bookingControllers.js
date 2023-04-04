@@ -80,6 +80,9 @@ const createBooking = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         createdAt,
     });
     yield newBooking.save();
+    yield (findBranch === null || findBranch === void 0 ? void 0 : findBranch.updateOne({
+        booking: [...findBranch.booking, newBooking === null || newBooking === void 0 ? void 0 : newBooking._id],
+    }));
     res.send(newBooking);
 });
 exports.createBooking = createBooking;

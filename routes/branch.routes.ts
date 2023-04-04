@@ -8,13 +8,15 @@ import {
   updateBranch,
   deleteBranch,
   getAllBranches,
+  getBookingsByBranch,
+  getOperatorsByBranch,
 } from "../controllers/branchControllers";
 
 router.get("/allbranches", getAllBranches);
 
 router.get("/branches/:page", getAllBranch);
 
-router.get("/branches/:id", getBranch, (req, res) =>
+router.get("/onebranch/:id", getBranch, (req, res) =>
   res.json("getting single branch")
 );
 
@@ -30,4 +32,6 @@ router.delete("/branches/:id", deleteBranch, (req, res) =>
   res.json("getting a picked branch")
 );
 
+router.get("/getBookingsByBranch/:id", getBookingsByBranch)
+router.get("/getOperatorsByBranch/:id", getOperatorsByBranch)
 export default router;

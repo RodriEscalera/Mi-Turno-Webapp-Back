@@ -12,7 +12,7 @@ export interface IUser extends Document {
   dni: number;
   phone: number;
   usertype: string;
-  branch: [IBranch["_id"]];
+  branch: IBranch["_id"];
   booking: [IBooking["_id"]];
   comparePassword: (password: string) => Promise<Boolean>;
   newPassword: (password: string) => Promise<Boolean>;
@@ -45,12 +45,12 @@ const userSchema = new Schema({
     required: true,
   },
 
-  branch: [
+  branch: 
     {
       type: Schema.Types.ObjectId,
       ref: "Branch",
     },
-  ],
+  
 
   booking: [
     {

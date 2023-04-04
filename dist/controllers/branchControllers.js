@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteBranch = exports.updateBranch = exports.createBranch = exports.getBranch = exports.getAllBranch = exports.getAllBranches = void 0;
+exports.getOperatorsByBranch = exports.getBookingsByBranch = exports.deleteBranch = exports.updateBranch = exports.createBranch = exports.getBranch = exports.getAllBranch = exports.getAllBranches = void 0;
 const Branch_1 = __importDefault(require("../models/Branch"));
 const getAllBranches = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -40,8 +40,8 @@ const getAllBranch = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.getAllBranch = getAllBranch;
 const getBranch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const branchId = req.params.id;
-        const result = yield Branch_1.default.findById(branchId);
+        const { id } = req.params;
+        const result = yield Branch_1.default.findById(id);
         if (result) {
             res.status(200).json(result);
         }
@@ -113,3 +113,35 @@ const deleteBranch = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.deleteBranch = deleteBranch;
+const getBookingsByBranch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const branchId = req.params.id;
+        const branch = yield Branch_1.default.findById(branchId).populate("booking");
+        if (!branch) {
+            return res.status(404).json({ message: "Branch not found" });
+        }
+        const bookings = branch.booking;
+        res.status(200).json({ bookings });
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server error" });
+    }
+});
+exports.getBookingsByBranch = getBookingsByBranch;
+const getOperatorsByBranch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const branchId = req.params.id;
+        const branch = yield Branch_1.default.findById(branchId).populate("operator");
+        if (!branch) {
+            return res.status(404).json({ message: "Branch not found" });
+        }
+        const operators = branch.operator;
+        res.status(200).json({ operators });
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server error" });
+    }
+});
+exports.getOperatorsByBranch = getOperatorsByBranch;

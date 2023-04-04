@@ -92,6 +92,7 @@ export const me = async (req: Request, res: Response) => {
         email: updatedUser?.email,
         dni: updatedUser?.dni,
         phone: updatedUser?.phone,
+        branch: updatedUser?.branch,
         usertype: updatedUser?.usertype,
       };
       res.send(payload);
@@ -149,7 +150,6 @@ export const findOneUser = async (req: Request, res: Response) => {
 
 export const updateUser = async (req: Request, res: Response) => {
   try {
-    // console.log(" REQ.BODY", req.body);
     const { _id, fullName, email, dni, phone } = req.body;
     if (
       _id === "" ||
@@ -160,12 +160,10 @@ export const updateUser = async (req: Request, res: Response) => {
     ) {
       return res.sendStatus(400);
     }
-    //console.log("ESTO ES REQ.BODY NENEEE",req.body);
 
     const user = await User.findById(_id);
     await user?.updateOne({ fullName, email, dni, phone });
     await user?.save();
-    //console.log(user);
 
     res.json(user);
   } catch (error) {

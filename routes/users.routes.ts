@@ -24,6 +24,8 @@ router.post("/askForChangePassword", changePasswordFirstStep);
 router.post("/changePassword", changePasswordSecondStep);
 router.post("/findAllOperators", validateAdminAndOp, findAllOperators);
 
+
+
 export default router;
 
 /*

@@ -1,15 +1,20 @@
 import { Request, Response } from "express";
 import User from "../models/Users";
-import Branch from "../models/Branch";
+import Branch, { IBranch } from "../models/Branch";
 import Admin from "../models/Admin";
 import { sendRegisterEmail } from "../services/emails";
 
 export const createOperator = async (req: Request, res: Response) => {
   try {
+
     const { fullName, email, password, branch, dni } = req.body;
     const usertype = "operator";
     const exists = await User.findOne({ email });
-    if (exists) return res.sendStatus(400);
+    const assignedBranch = await Branch.findById(branch);
+    if (exists) {
+      console.log("si existo", exists);
+      
+      return res.sendStatus(400);}
     const newOperator = new User({
       fullName,
       email,
@@ -20,6 +25,8 @@ export const createOperator = async (req: Request, res: Response) => {
     });
     sendRegisterEmail(newOperator);
     await newOperator.save();
+    await assignedBranch?.updateOne({ operator: [...assignedBranch.operator, newOperator?._id] });
+    await assignedBranch?.save();
     res.send(newOperator);
   } catch (err) {
     console.log(err);
@@ -34,13 +41,16 @@ export const asignbranch = async (req: Request, res: Response) => {
     const branch = await Branch.findById(branchId);
 
     await operator?.updateOne({ branch: [...operator.branch, branch?.id] });
+    await branch?.updateOne({ operator: [...branch.operator, operator?.id] });
     await operator?.save();
+    await branch?.save();
     res.send(operator);
   } catch (err) {
     console.log(err);
     res.sendStatus(400);
   }
 };
+
 
 export const registerAdmin = async (req: Request, res: Response) => {
   try {
