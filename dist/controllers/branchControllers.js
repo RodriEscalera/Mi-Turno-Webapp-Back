@@ -77,7 +77,7 @@ const createBranch = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.createBranch = createBranch;
 const updateBranch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    const { name, location, phone, email } = req.body;
+    const { name, startingTime, closingTime, phone, email } = req.body;
     try {
         const branch = yield Branch_1.default.findById(id);
         if (!branch) {
@@ -85,9 +85,10 @@ const updateBranch = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             return;
         }
         branch.name = name;
-        branch.location = location;
         branch.phone = phone;
         branch.email = email;
+        branch.startingTime = startingTime;
+        branch.closingTime = closingTime;
         yield branch.save();
         res.json(branch);
     }
