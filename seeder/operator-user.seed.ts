@@ -7,7 +7,7 @@ const operadores = [
     email: "ope1@ope.com",
     password: "Operator@N1",
     usertype: "operator",
-    branch: "642d7b07555ce7216445d9ae"
+    branch: "642d93d850eac147a3224a7f"
   },
   {
     fullName: "operador2",

@@ -60,6 +60,7 @@ exports.getBookingOfUser = getBookingOfUser;
 //
 const createBooking = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { branch, user, time, date, fullName, phone, email } = req.body;
+    console.log(req.body);
     const today = new Date();
     const createdAt = today.toLocaleString("es-AR");
     const findBranch = yield Branch_1.default.findById(branch);
