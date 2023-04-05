@@ -22,7 +22,7 @@ router.post("/findOne/:id", validateAdminAndOp, findOneUser);
 router.put("/updateUser", updateUser);
 router.post("/askForChangePassword", changePasswordFirstStep);
 router.post("/changePassword", changePasswordSecondStep);
-router.post("/findAllOperators", validateAdminAndOp, findAllOperators);
+router.post("/findAllOperators",  findAllOperators);
 
 
 

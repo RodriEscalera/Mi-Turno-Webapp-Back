@@ -7,6 +7,7 @@ const operadores = [
     email: "ope1@ope.com",
     password: "Operator@N1",
     usertype: "operator",
+    branch: "642d7b07555ce7216445d9ae"
   },
   {
     fullName: "operador2",
@@ -14,6 +15,7 @@ const operadores = [
     email: "ope2@ope.com",
     password: "Operator@N2",
     usertype: "operator",
+    branch: "642d7b07555ce7216445d9af"
   },
   {
     fullName: "operador3",
@@ -21,6 +23,7 @@ const operadores = [
     email: "ope3@ope.com",
     password: "Operator@N3",
     usertype: "operator",
+    branch: "642d7b07555ce7216445d9b0"
   },
   {
     fullName: "operador4",
@@ -28,6 +31,7 @@ const operadores = [
     email: "ope4@ope.com",
     password: "Operator@N4",
     usertype: "operator",
+    branch: "642d7b07555ce7216445d9b3"
   },
 ];
 

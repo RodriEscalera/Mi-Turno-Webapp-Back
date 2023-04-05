@@ -115,8 +115,8 @@ const deleteBranch = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.deleteBranch = deleteBranch;
 const getBookingsByBranch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const branchId = req.params.id;
-        const branch = yield Branch_1.default.findById(branchId).populate("booking");
+        const { id } = req.params;
+        const branch = yield Branch_1.default.findById(id).populate("booking");
         if (!branch) {
             return res.status(404).json({ message: "Branch not found" });
         }
@@ -131,8 +131,8 @@ const getBookingsByBranch = (req, res) => __awaiter(void 0, void 0, void 0, func
 exports.getBookingsByBranch = getBookingsByBranch;
 const getOperatorsByBranch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const branchId = req.params.id;
-        const branch = yield Branch_1.default.findById(branchId).populate("operator");
+        const { id } = req.params;
+        const branch = yield Branch_1.default.findById(id).populate("operator");
         if (!branch) {
             return res.status(404).json({ message: "Branch not found" });
         }
