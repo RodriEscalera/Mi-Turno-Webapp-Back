@@ -15,7 +15,7 @@ router.post("/findOne/:id", validations_1.validateAdminAndOp, user_controller_1.
 router.put("/updateUser", user_controller_1.updateUser);
 router.post("/askForChangePassword", user_controller_1.changePasswordFirstStep);
 router.post("/changePassword", user_controller_1.changePasswordSecondStep);
-router.post("/findAllOperators", validations_1.validateAdminAndOp, user_controller_1.findAllOperators);
+router.post("/findAllOperators", user_controller_1.findAllOperators);
 exports.default = router;
 /*
 router.post("/sendmail", async (req: Request, res: Response) => {

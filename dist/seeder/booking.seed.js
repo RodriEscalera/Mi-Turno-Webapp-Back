@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.seedBooking = void 0;
 const mongoose = require("mongoose");
 const Booking_1 = __importDefault(require("../models/Booking"));
-//seed turnos
 const turnos = [
     {
         date: "12/3/2023",

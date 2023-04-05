@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 import Booking from "../models/Booking";
 import Branch from "../models/Branch";
 
-//seed turnos
+
 const turnos = [
   {
     date: "12/3/2023",
