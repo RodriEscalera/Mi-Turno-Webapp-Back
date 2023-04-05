@@ -46,6 +46,8 @@ export const getBookingOfUser = async (req: Request, res: Response) => {
 //
 export const createBooking = async (req: Request, res: Response) => {
   const { branch, user, time, date, fullName, phone, email } = req.body;
+  console.log(req.body);
+  
   const today = new Date();
   const createdAt = today.toLocaleString("es-AR");
   const findBranch = await Branch.findById(branch);
