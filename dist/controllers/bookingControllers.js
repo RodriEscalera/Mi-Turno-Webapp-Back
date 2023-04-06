@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getScheduleOfBooking = exports.getSoldOutBookingPerMonth = exports.deleteBooking = exports.updateBooking = exports.getLastBooking = exports.createBooking = exports.getBookingOfUser = exports.getAllBookings = exports.getOneBooking = void 0;
+exports.getScheduleOfBooking = exports.getSoldOutBookingPerMonth = exports.deleteBooking = exports.updateBookingAvailability = exports.updateBooking = exports.getLastBooking = exports.createBooking = exports.getBookingOfUser = exports.getAllBookings = exports.getOneBooking = void 0;
 const Booking_1 = __importDefault(require("../models/Booking"));
 const Branch_1 = __importDefault(require("../models/Branch"));
 const functions_1 = require("../utils/functions");
@@ -130,6 +130,23 @@ const updateBooking = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.updateBooking = updateBooking;
+const updateBookingAvailability = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const bookingId = req.params.id;
+        const booking = yield Booking_1.default.findById(bookingId);
+        if (!booking) {
+            return res.status(404).json({ message: "Booking not found" });
+        }
+        booking.available = true;
+        yield booking.save();
+        res.status(200).json({ message: "Booking availability updated successfully" });
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server error" });
+    }
+});
+exports.updateBookingAvailability = updateBookingAvailability;
 const deleteBooking = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     try {

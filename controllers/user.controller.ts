@@ -33,7 +33,7 @@ export const register = async (req: Request, res: Response) => {
 export const login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
-    console.log(password);
+   
     const user = await User.findOne({ email });
     const admin = await Admin.findOne({ email });
 

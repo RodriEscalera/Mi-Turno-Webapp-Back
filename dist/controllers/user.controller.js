@@ -46,7 +46,6 @@ exports.register = register;
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, password } = req.body;
-        console.log(password);
         const user = yield Users_1.default.findOne({ email });
         const admin = yield Admin_1.default.findOne({ email });
         const result = [user, admin];

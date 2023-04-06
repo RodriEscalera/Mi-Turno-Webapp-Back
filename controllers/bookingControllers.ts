@@ -121,6 +121,25 @@ export const updateBooking = async (
   }
 };
 
+export const updateBookingAvailability = async (req: Request, res: Response) => {
+  try {
+    const bookingId = req.params.id;
+    const booking = await Booking.findById(bookingId);
+
+    if (!booking) {
+      return res.status(404).json({ message: "Booking not found" });
+    }
+
+    booking.available = true;
+    await booking.save();
+
+    res.status(200).json({ message: "Booking availability updated successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 export const deleteBooking = async (
   req: Request,
   res: Response
