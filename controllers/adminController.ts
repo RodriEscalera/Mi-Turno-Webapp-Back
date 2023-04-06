@@ -69,8 +69,8 @@ export const registerAdmin = async (req: Request, res: Response) => {
 
 export const updateOperator = async (req: Request, res: Response) => {
   try {
-    const { fullName, email, dni, branch } = req.body;
     const { id } = req.params;
+    const { fullName, email, dni, branch } = req.body;
 
     const operator = await User.findById(id);
 

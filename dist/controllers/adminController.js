@@ -82,8 +82,8 @@ const registerAdmin = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 exports.registerAdmin = registerAdmin;
 const updateOperator = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { fullName, email, dni, branch } = req.body;
         const { id } = req.params;
+        const { fullName, email, dni, branch } = req.body;
         const operator = yield Users_1.default.findById(id);
         if (!operator) {
             res.status(404).json({ message: "operator not found" });
