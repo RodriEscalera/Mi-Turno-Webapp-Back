@@ -33,6 +33,7 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             dni,
             usertype,
         });
+        yield newUser.hashPassword();
         (0, emails_1.sendRegisterEmail)(newUser);
         yield newUser.save();
         res.send(newUser);
@@ -50,7 +51,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const admin = yield Admin_1.default.findOne({ email });
         const result = [user, admin];
         const resultado = result.filter((e) => e !== null);
-        console.log(resultado[0]);
+        console.log(resultado, "esto es");
         if (!resultado[0])
             return res.sendStatus(400);
         const isMatch = yield resultado[0].comparePassword(password);
@@ -214,7 +215,7 @@ const changePasswordSecondStep = (req, res) => __awaiter(void 0, void 0, void 0,
         const returnedToken = (0, token_2.validateToken)(token);
         if (!user || !returnedToken)
             return res.status(400).send("id o token invalido!");
-        yield user.newPassword(newPassword);
+        // await user.newPassword(newPassword);
         res.sendStatus(200);
     }
     catch (err) {

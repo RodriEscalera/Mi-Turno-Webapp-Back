@@ -90,6 +90,7 @@ const updateBranch = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         branch.startingTime = startingTime;
         branch.closingTime = closingTime;
         yield branch.save();
+        console.log(branch);
         res.json(branch);
     }
     catch (error) {
