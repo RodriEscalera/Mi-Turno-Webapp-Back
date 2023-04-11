@@ -90,6 +90,8 @@ export const updateBranch = async (
     branch.closingTime = closingTime;
 
     await branch.save();
+    console.log(branch);
+
     res.json(branch);
   } catch (error) {
     console.error(error);
@@ -119,7 +121,6 @@ export const deleteBranch = async (
 
 export const getBookingsByBranch = async (req: Request, res: Response) => {
   try {
-
     const { id } = req.params;
     const branch = await Branch.findById(id).populate("booking");
 
@@ -136,7 +137,6 @@ export const getBookingsByBranch = async (req: Request, res: Response) => {
 
 export const getOperatorsByBranch = async (req: Request, res: Response) => {
   try {
-
     const { id } = req.params;
     const branch = await Branch.findById(id).populate("operator");
 

@@ -51,15 +51,19 @@ const userSchema = new Schema({
             ref: "booking",
         },
     ],
+    isModifiedPassword: {
+        type: Boolean,
+    },
 });
-userSchema.pre("save", function () {
+userSchema.methods.hashPassword = function () {
     return __awaiter(this, void 0, void 0, function* () {
         const user = this;
         const salt = yield bcrypt_1.default.genSalt();
         const hash = yield bcrypt_1.default.hash(user.password, salt);
-        user.password = hash;
+        yield user.updateOne({ password: hash });
+        yield user.save();
     });
-});
+};
 userSchema.methods.newPassword = function (password) {
     return __awaiter(this, void 0, void 0, function* () {
         const user = this;
@@ -68,6 +72,21 @@ userSchema.methods.newPassword = function (password) {
         yield user.updateOne({ password: hash });
     });
 };
+userSchema.pre("save", function (next) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const user = this;
+        if (!user.isModified("password")) {
+            return next();
+        }
+        if (user.isModified("password")) {
+            // verifica si la contraseña ha sido modificada
+            const salt = yield bcrypt_1.default.genSalt();
+            const hash = yield bcrypt_1.default.hash(user.password, salt);
+            user.password = hash;
+            user.isModifiedPassword = false; // establece la propiedad a falso después de encriptar la contraseña
+        }
+    });
+});
 userSchema.methods.comparePassword = function (password) {
     return __awaiter(this, void 0, void 0, function* () {
         return yield bcrypt_1.default.compare(password, this.password);
