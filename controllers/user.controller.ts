@@ -7,6 +7,7 @@ import { IBranch } from "../models/Branch";
 import Admin from "../models/Admin";
 import { sendMailChangePassword, sendRegisterEmail } from "../services/emails";
 import Branch from "../models/Branch";
+
 export const register = async (req: Request, res: Response) => {
   try {
     console.log(req.body);
@@ -21,6 +22,7 @@ export const register = async (req: Request, res: Response) => {
       dni,
       usertype,
     });
+    await newUser.hashPassword();
     sendRegisterEmail(newUser);
     await newUser.save();
     res.send(newUser);
@@ -33,13 +35,13 @@ export const register = async (req: Request, res: Response) => {
 export const login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
-   
+
     const user = await User.findOne({ email });
     const admin = await Admin.findOne({ email });
 
     const result = [user, admin];
     const resultado: any = result.filter((e) => e !== null);
-    console.log(resultado[0]);
+    console.log(resultado, "esto es");
     if (!resultado[0]) return res.sendStatus(400);
     const isMatch = await resultado[0].comparePassword(password);
     if (!isMatch) return res.status(400).send("Not mached");
@@ -203,7 +205,7 @@ export const changePasswordSecondStep = async (req: Request, res: Response) => {
     if (!user || !returnedToken)
       return res.status(400).send("id o token invalido!");
 
-    await user.newPassword(newPassword);
+    // await user.newPassword(newPassword);
     res.sendStatus(200);
   } catch (err) {
     console.log(err);
