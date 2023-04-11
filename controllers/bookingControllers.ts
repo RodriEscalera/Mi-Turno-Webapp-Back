@@ -1,6 +1,22 @@
 import Booking, { IBooking } from "../models/Booking";
 import { Request, Response } from "express";
-import Branch, { IBranch } from "../models/Branch";
+import Branch from "../models/Branch";
+import { countWordOccurrences } from "../utils/functions";
+
+export const getOneBooking = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const findBooking = await Booking.findById(id).populate("branch");
+
+    if (findBooking) {
+      res.status(200).send(findBooking);
+    } else {
+      res.status(404).json({ message: "Turno no encontrado" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Error al obtener el turno" });
+  }
+};
 
 export const getAllBookings = async (req: Request, res: Response) => {
   try {
@@ -15,8 +31,9 @@ export const getAllBookings = async (req: Request, res: Response) => {
 export const getBookingOfUser = async (req: Request, res: Response) => {
   try {
     const idUser = req.params.user;
-    const turnos: IBooking[] = await Booking.find({ user: idUser })
-    .populate("branch")
+    const turnos: IBooking[] = await Booking.find({ user: idUser }).populate(
+      "branch"
+    );
 
     res.status(200).send(turnos);
   } catch (error) {
@@ -26,9 +43,21 @@ export const getBookingOfUser = async (req: Request, res: Response) => {
       .json({ message: "Hubo un error al obtener los turnos del usuario." });
   }
 };
-
+//
 export const createBooking = async (req: Request, res: Response) => {
   const { branch, user, time, date, fullName, phone, email } = req.body;
+  console.log(req.body);
+  
+  const today = new Date();
+  const createdAt = today.toLocaleString("es-AR");
+  const findBranch = await Branch.findById(branch);
+
+  if (!findBranch) return res.sendStatus(400);
+  const exists = await Booking.findOne({ branch, date, time });
+  if (exists) {
+    console.log("este turno ya existe, mira:", exists);
+    return res.sendStatus(400);
+  }
   const newBooking = new Booking({
     branch,
     user,
@@ -37,19 +66,39 @@ export const createBooking = async (req: Request, res: Response) => {
     phone,
     date,
     time,
+    createdAt,
   });
   await newBooking.save();
+  await findBranch?.updateOne({
+    booking: [...findBranch.booking, newBooking?._id],
+  });
   res.send(newBooking);
 };
 
+export const getLastBooking = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+
+    const bookings: any = await Booking.find({ user: userId })
+      .sort({
+        createdAt: "desc",
+      })
+      .populate("branch");
+    res.send(bookings[0]);
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(400);
+  }
+};
+//new
 export const updateBooking = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { id } = req.params;
-  const { branch, user, time, date, fullName, phone, email } = req.body;
-
   try {
+    const { id } = req.params;
+    const { branch, user, time, date, fullName, phone, email } = req.body;
+
     const booking = await Booking.findById(id);
     if (!booking) {
       res.status(404).json({ message: "Booking not found" });
@@ -72,6 +121,25 @@ export const updateBooking = async (
   }
 };
 
+export const updateBookingAvailability = async (req: Request, res: Response) => {
+  try {
+    const bookingId = req.params.id;
+    const booking = await Booking.findById(bookingId);
+
+    if (!booking) {
+      return res.status(404).json({ message: "Booking not found" });
+    }
+
+    booking.available = true;
+    await booking.save();
+
+    res.status(200).json({ message: "Booking availability updated successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 export const deleteBooking = async (
   req: Request,
   res: Response
@@ -89,5 +157,50 @@ export const deleteBooking = async (
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error deleting booking" });
+  }
+};
+
+export const getSoldOutBookingPerMonth = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const { date, branch } = req.body;
+    const month = date.split("-")[1];
+
+    const bookings = await Booking.find({
+      date: { $regex: `-${month}-` },
+      branch: branch,
+    });
+    const findBranch = await Branch.findById(branch);
+    console.log(findBranch);
+    const reserves = bookings.map((element) => element.date);
+    const toShow = countWordOccurrences(reserves);
+    const soldOut: string[] = [];
+    toShow.forEach((element) => {
+      for (const key in element) {
+        if (element[key] >= 8) {
+          soldOut.push(key);
+        }
+      }
+    });
+    console.log(soldOut);
+    res.send(soldOut);
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(400);
+  }
+};
+
+export const getScheduleOfBooking = async (req: Request, res: Response) => {
+  try {
+    const { date, branch } = req.body;
+
+    const bookings = await Booking.find({ date, branch });
+    const returning = bookings.map((element) => element.time);
+    res.send(returning);
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(400);
   }
 };

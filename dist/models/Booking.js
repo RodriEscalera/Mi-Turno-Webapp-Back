@@ -2,6 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
 const bookingSchema = new mongoose_1.Schema({
+    createdAt: {
+        type: String,
+        required: false,
+    },
     branch: {
         type: mongoose_1.Schema.Types.ObjectId,
         ref: "Branch",

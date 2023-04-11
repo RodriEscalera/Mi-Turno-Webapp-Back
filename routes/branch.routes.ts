@@ -8,26 +8,31 @@ import {
   updateBranch,
   deleteBranch,
   getAllBranches,
+  getBookingsByBranch,
+  getOperatorsByBranch,
 } from "../controllers/branchControllers";
+import { validateAdmin } from "../middlewares/validations";
 
 router.get("/allbranches", getAllBranches);
 
 router.get("/branches/:page", getAllBranch);
 
-router.get("/branches/:id", getBranch, (req, res) =>
+router.post("/onebranch/:id", getBranch, (req, res) =>
   res.json("getting single branch")
 );
 
-router.post("/createbranch", createBranch, (req, res) =>
+router.post("/createbranch", createBranch, validateAdmin, (req, res) =>
   res.json("posting a new branch")
 );
 
-router.put("/branches/:id", updateBranch, (req, res) =>
+router.put("/updateBranch/:id", updateBranch, validateAdmin, (req, res) =>
   res.json("updating a branch")
 );
 
-router.delete("/branches/:id", deleteBranch, (req, res) =>
+router.delete("/deleteBranch/:id", deleteBranch, validateAdmin, (req, res) =>
   res.json("getting a picked branch")
 );
 
+router.get("/getBookingsByBranch/:id", getBookingsByBranch);
+router.get("/getOperatorsByBranch/:id", getOperatorsByBranch);
 export default router;

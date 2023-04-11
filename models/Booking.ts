@@ -11,8 +11,13 @@ export interface IBooking extends Document {
   phone: Number;
   email: String;
   available: Boolean;
+  createdAt: String;
 }
 const bookingSchema = new Schema({
+  createdAt: {
+    type: String,
+    required: false,
+  },
   branch: {
     type: Schema.Types.ObjectId,
     ref: "Branch",

@@ -12,9 +12,11 @@ export interface IUser extends Document {
   dni: number;
   phone: number;
   usertype: string;
-  branch: [IBranch["_id"]];
+  branch: IBranch["_id"];
   booking: [IBooking["_id"]];
   comparePassword: (password: string) => Promise<Boolean>;
+  newPassword: (password: string) => Promise<Boolean>;
+  hashPassword: () => Promise<void>;
 }
 
 const userSchema = new Schema({
@@ -44,12 +46,10 @@ const userSchema = new Schema({
     required: true,
   },
 
-  branch: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "branch",
-    },
-  ],
+  branch: {
+    type: Schema.Types.ObjectId,
+    ref: "Branch",
+  },
 
   booking: [
     {
@@ -57,14 +57,40 @@ const userSchema = new Schema({
       ref: "booking",
     },
   ],
+
+  isModifiedPassword: {
+    type: Boolean,
+  },
 });
 
-userSchema.pre<IUser>("save", async function () {
+userSchema.methods.hashPassword = async function () {
   const user = this;
-
   const salt = await bcrypt.genSalt();
   const hash = await bcrypt.hash(user.password, salt);
-  user.password = hash;
+  await user.updateOne({ password: hash });
+  await user.save();
+};
+
+userSchema.methods.newPassword = async function (password: string) {
+  const user = this;
+  const salt = await bcrypt.genSalt();
+  const hash = await bcrypt.hash(password, salt);
+  await user.updateOne({ password: hash });
+};
+
+userSchema.pre<any>("save", async function (next) {
+  const user = this;
+  if (!user.isModified("password")) {
+    return next();
+  }
+  if (user.isModified("password")) {
+    // verifica si la contraseña ha sido modificada
+    const salt = await bcrypt.genSalt();
+    const hash = await bcrypt.hash(user.password, salt);
+
+    user.password = hash;
+    user.isModifiedPassword = false; // establece la propiedad a falso después de encriptar la contraseña
+  }
 });
 
 userSchema.methods.comparePassword = async function (
